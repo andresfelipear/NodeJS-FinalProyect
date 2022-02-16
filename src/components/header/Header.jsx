@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import "./Header.css"
 
 function Header() {
     const { loggedIn } = false
@@ -7,49 +8,47 @@ function Header() {
     }
 
 
+
     return (
         <div>
-            <nav class="navbar is-info">
-                <div class="navbar-brand">
-                    <a class="navbar-item" href="/">
-                        <span style="font-size: 24px; color: goldenrod; ">
-                            <i class="fas fa-blog"></i>
+            <nav className="navbar is-info">
+                <div className="navbar-brand">
+                    <a className="navbar-item" href="/">
+                        <span className='spanIcon'>
+                            <i className="fas fa-blog"></i>
                         </span>
 
                     </a>
-                    <div class="navbar-burger" data-target="navbarExampleTransparentExample">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                    <div className="navbar-burger" data-target="navbarExampleTransparentExample">
                     </div>
                 </div>
 
-                <div id="navbarExampleTransparentExample" class="navbar-menu">
+                <div id="navbarExampleTransparentExample" className="navbar-menu">
 
-                    <div class="navbar-start">
-                        <a class="navbar-item" href="/admin/"> Posts </a>
-                        {loggedIn && (<a class="navbar-item" href="/admin/add-post"> Add Post </a>)}
+                    <div className="navbar-start">
+                        <a className="navbar-item" href="/"> Posts </a>
+                        {loggedIn && (<a className="navbar-item" href="/admin/add-post"> Add Post </a>)}
                     </div>
 
-                    <div class="navbar-end">
+                    <div className="navbar-end">
 
                         {loggedIn ? (
                             <>
-                                <div class="navbar-item">
+                                <div className="navbar-item">
                                     {user.username}
                                 </div>
                                 <form action="/logout" method="post">
 
-                                    <div class="navbar-item">
-                                        <button class="button is-light" type="submit"> Log Out </button>
+                                    <div className="navbar-item">
+                                        <button className="button is-light" type="submit"> Log Out </button>
                                     </div>
 
                                 </form>
                             </>
                         ) : (
                             <>
-                                <a class="navbar-item" href="/login"> Login </a>
-                                <a class="navbar-item" href="/signup">Sign Up</a>
+                                <a className="navbar-item" href="/login"> Login </a>
+                                <a className="navbar-item" href="/signup">Sign Up</a>
                             </>
 
                         )}

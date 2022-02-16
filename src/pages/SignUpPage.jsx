@@ -58,7 +58,7 @@ export default function SignUpPage() {
     }, [password, confirmPassword])
 
     return (
-        <main class="container mt-6">
+        <main className="container mt-6">
 
 
                 {status === "error" && (
@@ -76,33 +76,33 @@ export default function SignUpPage() {
                     </Notification>
                 )}
 
-                <div class="field">
-                    <label class="label" for="username">Username</label>
-                    <div class="control">
-                        <input class="input" type="text" name="username" onChange={(e) => setUsername(e.target.value)} />
+                <div className="field">
+                    <label className="label" htmlFor="username">Username</label>
+                    <div className="control">
+                        <input className="input" type="text" name="username" onChange={(e) => setUsername(e.target.value)} />
                     </div>
                 </div>
-                <div class="field">
-                    <label class="label" for="email">Email</label>
-                    <div class="control">
-                        <input class="input" type="email" name="email" onChange={(e) => setEmail(e.target.value)} />
+                <div className="field">
+                    <label className="label" htmlFor="email">Email</label>
+                    <div className="control">
+                        <input className="input" type="email" name="email" onChange={(e) => setEmail(e.target.value)} />
                     </div>
                 </div>
-                <div class="field">
-                    <label class="label" for="password">Password</label>
-                    <div class="control">
-                        <input class="input" type="password" name="password" onChange={onChange} />
+                <div className="field">
+                    <label className="label" htmlFor="password">Password</label>
+                    <div className="control">
+                        <input className="input" type="password" name="password" onChange={onChange} />
                     </div>
                 </div>
-                <div class="field">
-                    <label class="label" for="confirmPassword">Confirm Password</label>
-                    <div class="control">
-                        <input class="input" type="password" name="confirmPassword" onChange={onChange} />
+                <div className="field">
+                    <label className="label" htmlFor="confirmPassword">Confirm Password</label>
+                    <div className="control">
+                        <input className="input" type="password" name="confirmPassword" onChange={onChange} />
                     </div>
                 </div>
 
                 <button 
-                    class={`button ${isLoading && 'is-loading'} ${!isLoading && 'is-primary'}`}
+                    className={`button ${isLoading && 'is-loading'} ${!isLoading && 'is-primary'}`}
                     disabled={disabled}
                     onClick={submit}
                     type="submit">
