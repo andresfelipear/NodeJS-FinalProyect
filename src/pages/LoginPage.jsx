@@ -61,18 +61,18 @@ function LoginPage() {
       <div className="widthForm has-background-light">
         {status === "error" && (
           <Notification>
-            <Heading>Error Signing Up!</Heading>
-            Username and/or Email already exists
+            <Heading>Error Login!</Heading>
+            Username or password that you entered is incorrect. Use a valid credential and try again.
             <Button remove role="alertdialog" onClick={() => setStatus("")} />
           </Notification>
         )}
-        {status === "success" && (
+        {/* {status === "success" && (
           <Notification>
             <Heading>Signed Up Successfully</Heading>
             Click <a href='/'>here</a> to go to main Page
             <Button remove role="alertdialog" onClick={() => setStatus("")} />
           </Notification>
-        )}
+        )} */}
 
         <div className="field">
           <label className="label" htmlFor="username">Username</label>
