@@ -101,13 +101,17 @@ export default function SignUpPage() {
                     </div>
                 </div>
 
-                <button
-                    className={`button ${isLoading && 'is-loading'} ${!isLoading && 'is-primary'}`}
-                    disabled={disabled}
-                    onClick={submit}
-                    type="submit">
-                    Sign Up
-                </button>
+                <div className="is-flex is-justify-content-center mt-4">
+                    <button
+                        className={`button ${isLoading && 'is-loading'} ${disabled && 'is-danger'} ${!disabled && 'is-link'}`}
+                        disabled={disabled}
+                        onClick={submit}
+                        type="submit">
+                        Sign Up
+                    </button>
+
+                </div>
+
 
                 {isLoading && <span>Loading...</span>}
             </div>
