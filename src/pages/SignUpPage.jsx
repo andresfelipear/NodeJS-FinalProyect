@@ -58,9 +58,9 @@ export default function SignUpPage() {
     }, [password, confirmPassword])
 
     return (
-        <main className="container mt-6">
+        <main className="section mt-6 ">
 
-
+            <div className="widthForm has-background-light">
                 {status === "error" && (
                     <Notification>
                         <Heading>Error Signing Up!</Heading>
@@ -101,7 +101,7 @@ export default function SignUpPage() {
                     </div>
                 </div>
 
-                <button 
+                <button
                     className={`button ${isLoading && 'is-loading'} ${!isLoading && 'is-primary'}`}
                     disabled={disabled}
                     onClick={submit}
@@ -110,6 +110,8 @@ export default function SignUpPage() {
                 </button>
 
                 {isLoading && <span>Loading...</span>}
+            </div>
+
 
 
         </main>
