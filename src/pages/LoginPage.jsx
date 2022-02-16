@@ -1,11 +1,12 @@
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import {
   Heading,
   Button,
   Notification,
 } from "react-bulma-components";
+import { UserContext } from '../context/UserContext'
 
 function LoginPage() {
   const [username, setUsername] = useState("");
@@ -13,6 +14,8 @@ function LoginPage() {
   const [status, setStatus] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
+
+  const [userContext, setUserContext] = useContext(UserContext)
 
   const navigate = useNavigate()
   const location = useLocation()
@@ -35,6 +38,7 @@ function LoginPage() {
       .then((data) => {
         setStatus("success");
         setIsLoading(false);
+        setUserContext(prev => ({ ...prev, token: data.token, ...data }))
         let from = location.state?.from?.pathname || '/'
         navigate(from, { replace: true })
       })
@@ -54,6 +58,7 @@ function LoginPage() {
       setIsLoading(false)
     }
   }, [password, username])
+
 
   return (
     <main className="section mt-6 ">

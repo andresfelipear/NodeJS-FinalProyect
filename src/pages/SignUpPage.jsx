@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import React from 'react'
 import {
     Heading,
     Button,
     Notification,
 } from "react-bulma-components";
+import { UserContext } from "../context/UserContext"
 
 export default function SignUpPage() {
     const [username, setUsername] = useState("");
@@ -14,6 +15,8 @@ export default function SignUpPage() {
     const [status, setStatus] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [disabled, setDisabled] = useState(true);
+
+    const [userContext, setUserContext] = useContext(UserContext)
 
     const onChange = (event) => {
         if (event.target.name === "password") setPassword(event.target.value);
@@ -28,6 +31,7 @@ export default function SignUpPage() {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body),
+            credentials: "include"
         })
             .then((res) => {
                 if (!res.ok) {
@@ -37,8 +41,10 @@ export default function SignUpPage() {
                 return res.json();
             })
             .then((data) => {
+                console.log(data);
                 setStatus("success");
                 setIsLoading(false);
+                setUserContext(prev => ({ ...prev, token: data.token }))
             })
             .catch((err) => {
                 setStatus("error");

@@ -1,10 +1,28 @@
-import React from 'react'
+
 import "./Header.css"
+import React, { useContext } from "react";
+import { UserContext } from "../../context/UserContext";
+
 
 function Header() {
+    const [userContext, setUserContext] = useContext(UserContext);
+
     const { loggedIn } = false
     const user = {
         username: "pablito"
+    }
+    console.log(userContext);
+
+    const logoutHandler = () =>{
+        fetch("http://localhost:8000/api/user/logout", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }).then(async (response) => {
+            setUserContext(prev => ({ ...prev, user: undefined, token: null }))
+            
+          });
     }
 
 
@@ -27,23 +45,19 @@ function Header() {
 
                     <div className="navbar-start">
                         <a className="navbar-item" href="/"> Posts </a>
-                        {loggedIn && (<a className="navbar-item" href="/admin/add-post"> Add Post </a>)}
+                        {userContext.user && (<a className="navbar-item" href="/admin/add-post"> Add Post </a>)}
                     </div>
 
                     <div className="navbar-end">
 
-                        {loggedIn ? (
+                        {userContext.user ? (
                             <>
                                 <div className="navbar-item">
-                                    {user.username}
+                                    {userContext?.user.username}
                                 </div>
-                                <form action="/logout" method="post">
-
-                                    <div className="navbar-item">
-                                        <button className="button is-light" type="submit"> Log Out </button>
-                                    </div>
-
-                                </form>
+                                <div className="navbar-item">
+                                    <button className="button is-light" type="submit" onClick={logoutHandler}> Log Out </button>
+                                </div>
                             </>
                         ) : (
                             <>
