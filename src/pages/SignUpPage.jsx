@@ -71,7 +71,7 @@ export default function SignUpPage() {
                 {status === "success" && (
                     <Notification>
                         <Heading>Signed Up Successfully</Heading>
-                        Click <a>here</a> to go to Login page
+                        Click <a href="/login">here</a> to go to Login page
                         <Button remove role="alertdialog" onClick={() => setStatus("")} />
                     </Notification>
                 )}
