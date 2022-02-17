@@ -27,6 +27,7 @@ function LoginPage() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
+      credentials: "include"
     })
       .then((res) => {
         if (!res.ok) {
@@ -38,7 +39,7 @@ function LoginPage() {
       .then((data) => {
         setStatus("success");
         setIsLoading(false);
-        setUserContext(prev => ({ ...prev, token: data.token, ...data }))
+        setUserContext(prev => ({ ...prev, token: data.token}))
         let from = location.state?.from?.pathname || '/'
         navigate(from, { replace: true })
       })

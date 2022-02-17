@@ -1,11 +1,33 @@
 
 import "./Header.css"
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 
 
 function Header() {
     const [userContext, setUserContext] = useContext(UserContext);
+
+    const fetchUserDetails = useCallback(() => {
+        fetch("http://localhost:8000/api/user/me", {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userContext.token}`,
+            }
+        }).then(async (response) => {
+            if (response.ok) {
+                const data = await response.json();
+                setUserContext((prev) => ({ ...prev, details: data }));
+            } else {
+                if (response.status === 401) {
+                    window.location.reload();
+                } else {
+                    setUserContext((prev) => ({ ...prev, details: null }));
+                }
+            }
+        });
+    }, [setUserContext, userContext.token]);
 
     const { loggedIn } = false
     const user = {
@@ -13,16 +35,18 @@ function Header() {
     }
     console.log(userContext);
 
-    const logoutHandler = () =>{
+    const logoutHandler = () => {
         fetch("http://localhost:8000/api/user/logout", {
             method: "GET",
+            credentials: "include",
             headers: {
-              "Content-Type": "application/json",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userContext.token}`,
             },
-          }).then(async (response) => {
+        }).then(async (response) => {
             setUserContext(prev => ({ ...prev, user: undefined, token: null }))
-            
-          });
+
+        });
     }
 
 
@@ -45,15 +69,15 @@ function Header() {
 
                     <div className="navbar-start">
                         <a className="navbar-item" href="/"> Posts </a>
-                        {userContext.user && (<a className="navbar-item" href="/admin/add-post"> Add Post </a>)}
+                        {userContext.details && (<a className="navbar-item" href="/admin/add-post"> Add Post </a>)}
                     </div>
 
                     <div className="navbar-end">
 
-                        {userContext.user ? (
+                        {userContext.details ? (
                             <>
                                 <div className="navbar-item">
-                                    {userContext?.user.username}
+                                    {userContext.details.username}
                                 </div>
                                 <div className="navbar-item">
                                     <button className="button is-light" type="submit" onClick={logoutHandler}> Log Out </button>
