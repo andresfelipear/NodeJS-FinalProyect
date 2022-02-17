@@ -14,7 +14,7 @@ function Header() {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${userContext.token}`,
-            }
+            },
         }).then(async (response) => {
             if (response.ok) {
                 const data = await response.json();
@@ -36,6 +36,8 @@ function Header() {
     }, [fetchUserDetails, userContext.details]);
 
     const logoutHandler = () => {
+        console.log("print contex token");
+        console.log(userContext.token)
         fetch("http://localhost:8000/api/user/logout", {
             method: "GET",
             credentials: "include",
