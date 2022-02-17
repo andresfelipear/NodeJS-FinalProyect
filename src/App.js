@@ -14,7 +14,7 @@ function App() {
   const [userContext, setUserContext] = useContext(UserContext)
   
   const verifyUser = useCallback(() => {
-    fetch("http://localhost:8000/api/user/refresh", {
+    fetch("http://localhost:8000/api/user/refreshToken", {
       method: 'POST',
       credentials: "include",
       header: { "Content-Type":"application/json"}
@@ -24,7 +24,6 @@ function App() {
         console.log(response)
         setUserContext(prev => ({ ...prev, token: data.token }))
       }else{
-        console.log(response)
         setUserContext(prev => ({ ...prev, token: null }))
       }
 

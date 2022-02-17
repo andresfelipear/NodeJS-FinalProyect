@@ -35,11 +35,9 @@ function LoginPage() {
           throw new Error(res.status);
         } else {
           const data = await res.json()
-          console.log(data.token)
           setStatus("success");
           setIsLoading(false);
           setUserContext(prev => ({ ...prev, token: data.token }))
-          console.log(userContext.token)
           let from = location.state?.from?.pathname || '/'
           navigate(from, { replace: true })
 

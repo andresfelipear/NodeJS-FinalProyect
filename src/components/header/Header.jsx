@@ -8,7 +8,6 @@ function Header() {
     const [userContext, setUserContext] = useContext(UserContext);
 
     const fetchUserDetails = useCallback(() => {
-        console.log("hola")
         fetch("http://localhost:8000/api/user/me", {
             method: "GET",
             credentials: "include",
@@ -30,6 +29,11 @@ function Header() {
         });
     }, [setUserContext, userContext.token]);
 
+    useEffect(() => {
+        if (!userContext.details && userContext.token) {
+            fetchUserDetails();
+        }
+    }, [fetchUserDetails, userContext.details]);
 
     const logoutHandler = () => {
         fetch("http://localhost:8000/api/user/logout", {
@@ -40,11 +44,16 @@ function Header() {
                 Authorization: `Bearer ${userContext.token}`,
             },
         }).then(async (response) => {
-            setUserContext(prev => ({ ...prev, user: undefined, token: null }))
+            if (!response.ok) {
+                throw new Error(response.status);
+            }
+            else {
+                const data = await response.json()
+                setUserContext(prev => ({ ...prev, details: undefined, token: null }))
+            }
 
         });
     }
-
 
 
     return (
