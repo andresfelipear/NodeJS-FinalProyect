@@ -1,6 +1,6 @@
 
 import "./Header.css"
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useEffect } from "react";
 import { UserContext } from "../../context/UserContext";
 
 
@@ -8,6 +8,7 @@ function Header() {
     const [userContext, setUserContext] = useContext(UserContext);
 
     const fetchUserDetails = useCallback(() => {
+        console.log("hola")
         fetch("http://localhost:8000/api/user/me", {
             method: "GET",
             credentials: "include",
@@ -29,11 +30,6 @@ function Header() {
         });
     }, [setUserContext, userContext.token]);
 
-    const { loggedIn } = false
-    const user = {
-        username: "pablito"
-    }
-    console.log(userContext);
 
     const logoutHandler = () => {
         fetch("http://localhost:8000/api/user/logout", {

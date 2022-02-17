@@ -29,19 +29,22 @@ function LoginPage() {
       body: JSON.stringify(body),
       credentials: "include"
     })
-      .then((res) => {
+      .then(async (res) => {
         if (!res.ok) {
           setIsLoading(false);
           throw new Error(res.status);
+        } else {
+          const data = await res.json()
+          console.log(data.token)
+          setStatus("success");
+          setIsLoading(false);
+          setUserContext(prev => ({ ...prev, token: data.token }))
+          console.log(userContext.token)
+          let from = location.state?.from?.pathname || '/'
+          navigate(from, { replace: true })
+
         }
         return res.json();
-      })
-      .then((data) => {
-        setStatus("success");
-        setIsLoading(false);
-        setUserContext(prev => ({ ...prev, token: data.token}))
-        let from = location.state?.from?.pathname || '/'
-        navigate(from, { replace: true })
       })
       .catch((err) => {
         setStatus("error");
