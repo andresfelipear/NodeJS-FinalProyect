@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { UserContext } from "../../context/UserContext";
-import { useLocation, useNavigate } from 'react-router-dom'
+import React, { useState, useEffect, useContext,useCallback } from 'react'
+import { UserContext} from "../../context/UserContext";
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 function AddPost() {
 
@@ -8,13 +8,9 @@ function AddPost() {
     const {search} = useLocation();
     const myUrl = new URLSearchParams(search)
     const param = myUrl.get('edit')
-    
+    const {postId} = useParams();
 
-    const post = {
-        title: "title",
-        description: "description",
-        imageUrl: "imageUrl"
-    }
+
     const [title, setTitle] = useState("")
     const [imageUrl, setImageUrl] = useState("")
     const [description, setDescription] = useState("")
@@ -22,9 +18,41 @@ function AddPost() {
     const [disabled, setDisabled] = useState(true);
     const [status, setStatus] = useState("");
     const [userContext, setUserContext] = useContext(UserContext);
+    const [post, setPost] = useState({
+        title: "title",
+        description: "description",
+        imageUrl: "imageUrl"
+    })
 
     const navigate = useNavigate()
     const location = useLocation()
+
+    const fetchPost = useCallback(() => {
+        fetch(process.env.REACT_APP_API_ENDPOINT + `api/admin/getPost/${postId}`, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userContext.token}`,
+          },
+        }).then(async (response) => {
+          if (response.ok) {
+            const data = await response.json();
+            console.log(data)
+            setPost(data.post);
+            setTitle(data.post.title);
+            setImageUrl(data.post.imageUrl);
+            setDescription(data.post.description);
+          }
+        });
+      }, [editing, postId])
+    
+      useEffect(() => {
+        if (editing) {
+          fetchPost();
+        }
+      }, [editing, fetchPost, post.title]);
+
 
     useEffect(() => {
         if (title && imageUrl && description) {
@@ -34,29 +62,56 @@ function AddPost() {
 
     const submit = () => {
         const body = { title, description, imageUrl };
-        fetch("http://localhost:8000/api/admin/add-post", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${userContext.token}`,
-            },
-            body: JSON.stringify(body),
-            credentials: "include"
-        })
-            .then((res) => {
-                if (!res.ok) {
-                    throw new Error(res.status);
-                }
-                return res.json();
+        if(!editing){
+            fetch("http://localhost:8000/api/admin/add-post", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${userContext.token}`,
+                },
+                body: JSON.stringify(body),
+                credentials: "include"
             })
-            .then((data) => {
-                setStatus("success");
-                // let from = location.state?.from?.pathname || '/'
-                navigate('/', { replace: true })
+                .then((res) => {
+                    if (!res.ok) {
+                        throw new Error(res.status);
+                    }
+                    return res.json();
+                })
+                .then((data) => {
+                    setStatus("success");
+                    navigate('/', { replace: true })
+                })
+                .catch((err) => {
+                    setStatus("error");
+                });
+        }
+        else{
+            fetch("http://localhost:8000/api/admin/edit-post", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${userContext.token}`,
+                },
+                body: JSON.stringify(body),
+                credentials: "include"
             })
-            .catch((err) => {
-                setStatus("error");
-            });
+                .then((res) => {
+                    if (!res.ok) {
+                        throw new Error(res.status);
+                    }
+                    return res.json();
+                })
+                .then((data) => {
+                    setStatus("success");
+                    navigate('/', { replace: true })
+                })
+                .catch((err) => {
+                    setStatus("error");
+                });
+        }
+        
+        
 
     };
 
@@ -67,26 +122,21 @@ function AddPost() {
                 <div className="field">
                     <label className="label" htmlFor="title">Title</label>
                     <div className="control">
-                        <input className="input" type="text" name="title" value={editing ? post.title : title} onChange={(e) => setTitle(e.target.value)} />
+                        <input className="input" type="text" name="title" value={title} onChange={(e) => setTitle(e.target.value)} />
                     </div>
                 </div>
                 <div className="field">
                     <label className="label" htmlFor="title">Image (url)</label>
                     <div className="control">
-                        <input className="input" type="text" name="imageUrl" value={editing ? post.imageUrl : imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
+                        <input className="input" type="text" name="imageUrl" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
                     </div>
                 </div>
                 <div className="field">
                     <label className="label" htmlFor="title">Description</label>
                     <div className="control">
-                        <textarea className="textarea" name="description" rows="5" onChange={(e) => setDescription(e.target.value)}>
-                            {editing ? post.description : description}</textarea>
+                        <input type="textarea" className="textarea" name="description" rows="5" value={description} onChange={(e) => setDescription(e.target.value)}/>
                     </div>
                 </div>
-
-                {/* <% if(editing) { %>
-            <input type="hidden" value="<%= post._id %>" name="postId" />
-        <% } %> */}
 
 
                 <div className="is-flex is-justify-content-center mt-4">

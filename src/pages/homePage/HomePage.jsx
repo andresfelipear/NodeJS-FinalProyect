@@ -134,7 +134,7 @@ function HomePage() {
 
                     {userContext.details && (
                       <>
-                        <Link className='card-footer-item color-secondary' to="/admin/add-post/?edit=true">Edit</Link>
+                        <Link className='card-footer-item color-secondary' to={`/admin/add-post/${post._id}?edit=true`}>Edit</Link>
                         {/* <a className="card-footer-item color-secondary"
                           href="/admin/add-post/<%= post._id %>?edit=true">Edit</a> */}
                         <form className='formDeletePost' onSubmit={deletePost}>

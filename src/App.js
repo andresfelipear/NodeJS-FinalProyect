@@ -54,7 +54,7 @@ function App() {
         <Route path='/' element={<HomePage />} />
         <Route path='/signup' element={<SignUpPage />} />
         <Route path='/login' element={<LoginPage />} />
-        <Route path='/admin/add-post' element={<AddPost />} />
+        <Route path='/admin/add-post/:postId' element={<AddPost />} />
       </Routes>
       <Footer/>
     </div>
