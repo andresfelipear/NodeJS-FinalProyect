@@ -22,7 +22,6 @@ function App() {
     }).then( async response => {
       if(response.ok){
         const data = await response.json()
-        console.log(response)
         setUserContext(prev => ({ ...prev, token: data.token }))
       }else{
         setUserContext(prev => ({ ...prev, token: null }))
