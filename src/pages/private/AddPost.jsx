@@ -9,6 +9,7 @@ function AddPost() {
     const myUrl = new URLSearchParams(search)
     const param = myUrl.get('edit')
     const {postId} = useParams();
+    console.log(param)
 
 
     const [title, setTitle] = useState("")
