@@ -38,7 +38,6 @@ function AddPost() {
         }).then(async (response) => {
           if (response.ok) {
             const data = await response.json();
-            console.log(data)
             setPost(data.post);
             setTitle(data.post.title);
             setImageUrl(data.post.imageUrl);
@@ -61,7 +60,7 @@ function AddPost() {
     }, [title, imageUrl, description])
 
     const submit = () => {
-        const body = { title, description, imageUrl };
+        const body = { title, description, imageUrl, postId };
         if(!editing){
             fetch("http://localhost:8000/api/admin/add-post", {
                 method: "POST",
