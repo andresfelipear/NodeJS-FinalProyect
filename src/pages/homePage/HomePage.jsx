@@ -1,16 +1,20 @@
 import React from 'react'
 import { useEffect, useState, useContext, useCallback } from "react";
-import { UserContext } from "../context/UserContext";
+import { UserContext } from "../../context/UserContext";
 import {
   Heading,
   Notification,
 } from "react-bulma-components";
 
+import "./HomePage.css"
+
 function HomePage() {
 
   const [error, setError] = useState("");
   const [posts, setPosts] = useState([])
+  const { fetchData, setFetchData } = useState(true)
   const [userContext, setUserContext] = useContext(UserContext);
+
   // const [comment, setComment] = useContext("")
 
   const fetchPosts = useCallback(() => {
@@ -24,6 +28,7 @@ function HomePage() {
       if (response.ok) {
         const data = await response.json();
         setPosts(data.posts)
+        setFetchData(false);
       }
       else {
         setError("Error fetching data")
@@ -35,13 +40,32 @@ function HomePage() {
     if (posts.length === 0) {
       fetchPosts();
     }
-  }, [fetchPosts, posts]);
+  }, [fetchData]);
 
   const submitLike = () => {
 
   }
 
-  const deletePost = () => {
+  const deletePost = (event) => {
+    const postId = event.target.postId.value;
+    fetch(process.env.REACT_APP_API_ENDPOINT + "api/admin/deletePost", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userContext.token}`,
+      },
+      body: JSON.stringify({ postId }),
+      credentials: "include",
+
+    }).then(async (response) => {
+      if (response.ok) {
+        await response.json;
+        setFetchData(true);
+      }
+      else {
+        setError("Error deleting post")
+      }
+    })
 
 
   }
@@ -110,8 +134,13 @@ function HomePage() {
                       <>
                         <a className="card-footer-item color-secondary"
                           href="/admin/edit-post/<%= post._id %>?edit=true">Edit</a>
-                        <a className="card-footer-item color-secondary" href="#"
-                          onClick={deletePost}>Delete</a>
+                        <form className='formDeletePost' onSubmit={deletePost}>
+                          <input type="hidden" name="postId" value={post._id} />
+                          <a className="card-footer-item color-secondary" href="#">
+                            <button className='button is-ghost has-text-info' type="submit">Delete</button>
+                          </a>
+                        </form>
+
                       </>)}
                   </footer>
                   <footer className="card-footer">
@@ -125,15 +154,22 @@ function HomePage() {
           })}
         </div>
       ) : (
-        <Notification>
-          <Heading>No Posts Found!</Heading>
-          Click <a href="/login">here</a> to go to Login page and create a Post
-        </Notification>
+        <div className=" container widthNotification has-background-light mt-6">
+          <Notification>
+            <Heading>No Posts Found!</Heading>
+            {userContext.details ?
+              (<h1 className='subtitle mt-2'>Click < a href="/admin/add-post">here</a> to create a Post</h1>) :
+              (<h1 className='subtitle'>Click < a href="/login">here</a> to go to Login page</h1>)
+            }
+
+          </Notification>
+        </div>
+
       )
       }
 
 
-    </main>
+    </main >
   )
 }
 

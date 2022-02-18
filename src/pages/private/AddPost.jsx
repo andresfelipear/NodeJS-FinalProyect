@@ -59,20 +59,20 @@ function AddPost() {
     return (
         <main className="section mt-6 ">
             <div className="widthForm has-background-light">
-                <div class="field">
-                    <label className="label" for="title">Title</label>
+                <div className="field">
+                    <label className="label" htmlFor="title">Title</label>
                     <div className="control">
                         <input className="input" type="text" name="title" value={editing ? post.title : title} onChange={(e) => setTitle(e.target.value)} />
                     </div>
                 </div>
                 <div className="field">
-                    <label className="label" for="title">Image (url)</label>
+                    <label className="label" htmlFor="title">Image (url)</label>
                     <div className="control">
                         <input className="input" type="text" name="imageUrl" value={editing ? post.imageUrl : imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
                     </div>
                 </div>
                 <div className="field">
-                    <label className="label" for="title">Description</label>
+                    <label className="label" htmlFor="title">Description</label>
                     <div className="control">
                         <textarea className="textarea" name="description" rows="5" onChange={(e) => setDescription(e.target.value)}>
                             {editing ? post.description : description}</textarea>

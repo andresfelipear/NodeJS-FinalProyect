@@ -1,0 +1,26 @@
+.buttons-like-commit{
+    font-size: 24px;
+    height: 40px;
+    color: black !important; 
+  }
+  
+  .buttons-like-commit:hover{
+    text-decoration: none !important;
+    color:rgba(0,0,0,0.6) !important;
+  }
+  
+  .color-secondary{
+    color:#0095f6!important; 
+  }
+
+  .formDeletePost button:hover{
+    text-decoration: none !important;
+
+  }
+
+  .widthNotification{
+    width: 35vw;
+    margin: auto;
+    padding: 20px 20px;
+    border-radius: 10px;
+  }

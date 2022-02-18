@@ -22,19 +22,4 @@ code {
   border-radius: 10px;
 }
 
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
 
-.buttons-like-commit{
-  font-size: 24px;
-  height: 40px;
-  color: black !important; 
-}
-
-.buttons-like-commit:hover{
-  text-decoration: none !important;
-  color:rgba(0,0,0,0.6) !important;
-}
-
-.color-secondary{
-  color:#0095f6!important; 
-}
