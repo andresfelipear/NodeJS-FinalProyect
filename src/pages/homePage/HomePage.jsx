@@ -44,7 +44,26 @@ function HomePage() {
     }
   }, [fetchData]);
 
-  const submitLike = () => {
+  const submitLike = (event) => {
+    const postId = event.target.postId.value;
+    fetch(process.env.REACT_APP_API_ENDPOINT + "api/admin/like-post", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userContext.token}`,
+      },
+      body: JSON.stringify({ postId }),
+      credentials: "include",
+
+    }).then(async (response) => {
+      if (response.ok) {
+        await response.json;
+        setFetchData(true);
+      }
+      else {
+        setError("Error liking a post")
+      }
+    })
 
   }
 
@@ -96,13 +115,15 @@ function HomePage() {
                   <div className="card-content">
                     <div className="is-flex mb-1">
                       <div className="pr-2">
-                        <input type="hidden" name="postId" value={post._id} />
-                        <button type="submit"
-                          className="buttons-like-commit button is-ghost p-0 "
-                          onClick={submitLike}
-                        >
-                          <i className="far fa-thumbs-up p-8"></i>
-                        </button>
+                        <form onSubmit={submitLike}>
+                          <input type="hidden" name="postId" value={post._id} />
+                          <button type="submit"
+                            className="buttons-like-commit button is-ghost p-0 "
+                          >
+                            <i className="far fa-thumbs-up p-8"></i>
+                          </button>
+                        </form>
+
                       </div>
                       <div className="pl-2" >
                         <span className="p-8  ">

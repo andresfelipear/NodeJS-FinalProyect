@@ -44,7 +44,7 @@ function AddPost() {
             setDescription(data.post.description);
           }
         });
-      }, [editing, postId])
+      }, [postId, userContext.token])
     
       useEffect(() => {
         if (editing) {
@@ -62,7 +62,7 @@ function AddPost() {
     const submit = () => {
         const body = { title, description, imageUrl, postId };
         if(!editing){
-            fetch("http://localhost:8000/api/admin/add-post", {
+            fetch(process.env.REACT_APP_API_ENDPOINT+"api/admin/add-post", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -86,7 +86,7 @@ function AddPost() {
                 });
         }
         else{
-            fetch("http://localhost:8000/api/admin/edit-post", {
+            fetch(process.env.REACT_APP_API_ENDPOINT+"api/admin/edit-post", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
