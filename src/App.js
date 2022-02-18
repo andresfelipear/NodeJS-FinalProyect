@@ -9,6 +9,7 @@ import Footer from './components/footer/Footer';
 import { useState, useContext, useEffect, useCallback } from 'react'
 
 import { UserContext } from './context/UserContext'
+import AddPost from './pages/private/AddPost';
 
 function App() {
   const [userContext, setUserContext] = useContext(UserContext)
@@ -54,6 +55,7 @@ function App() {
         <Route path='/' element={<HomePage />} />
         <Route path='/signup' element={<SignUpPage />} />
         <Route path='/login' element={<LoginPage />} />
+        <Route path='/admin/add-post' element={<AddPost />} />
       </Routes>
       <Footer/>
     </div>
