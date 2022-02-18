@@ -6,6 +6,8 @@ import {
   Notification,
 } from "react-bulma-components";
 
+import { Link } from 'react-router-dom'
+
 import "./HomePage.css"
 
 function HomePage() {
@@ -132,8 +134,9 @@ function HomePage() {
 
                     {userContext.details && (
                       <>
-                        <a className="card-footer-item color-secondary"
-                          href="/admin/edit-post/<%= post._id %>?edit=true">Edit</a>
+                        <Link className='card-footer-item color-secondary' to="/admin/add-post/?edit=true">Edit</Link>
+                        {/* <a className="card-footer-item color-secondary"
+                          href="/admin/add-post/<%= post._id %>?edit=true">Edit</a> */}
                         <form className='formDeletePost' onSubmit={deletePost}>
                           <input type="hidden" name="postId" value={post._id} />
                           <a className="card-footer-item color-secondary" href="#">

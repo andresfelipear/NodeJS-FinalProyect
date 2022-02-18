@@ -4,6 +4,11 @@ import { useLocation, useNavigate } from 'react-router-dom'
 
 function AddPost() {
 
+    //query
+    const {search} = useLocation();
+    const myUrl = new URLSearchParams(search)
+    const param = myUrl.get('edit')
+    
 
     const post = {
         title: "title",
@@ -13,7 +18,7 @@ function AddPost() {
     const [title, setTitle] = useState("")
     const [imageUrl, setImageUrl] = useState("")
     const [description, setDescription] = useState("")
-    const [editing, setEditing] = useState(false)
+    const [editing, setEditing] = useState(param?param:false)
     const [disabled, setDisabled] = useState(true);
     const [status, setStatus] = useState("");
     const [userContext, setUserContext] = useContext(UserContext);
