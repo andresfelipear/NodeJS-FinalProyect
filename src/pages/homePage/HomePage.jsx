@@ -91,7 +91,26 @@ function HomePage() {
 
   }
 
-  const addComment = () => {
+  const addComment = (event) => {
+    const comment = event.target.comment.value;
+    const postId = event.target.postId.value;
+    fetch(process.env.REACT_APP_API_ENDPOINT + "api/admin/add-comment", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userContext.token}`,
+      },
+      body: JSON.stringify({ postId, comment }),
+      credentials: "include",
+
+    }).then(async (response) => {
+      if (response.ok) {
+        await response.json;
+      }
+      else {
+        setError("Error you should be logged for comment a post")
+      }
+    })
 
   }
   return (
@@ -156,8 +175,6 @@ function HomePage() {
                     {userContext.details && (
                       <>
                         <Link className='card-footer-item color-secondary' to={`/admin/add-post/${post._id}?edit=true`}>Edit</Link>
-                        {/* <a className="card-footer-item color-secondary"
-                          href="/admin/add-post/<%= post._id %>?edit=true">Edit</a> */}
                         <form className='formDeletePost' onSubmit={deletePost}>
                           <input type="hidden" name="postId" value={post._id} />
                           <a className="card-footer-item color-secondary" href="#">
@@ -168,8 +185,12 @@ function HomePage() {
                       </>)}
                   </footer>
                   <footer className="card-footer">
-                    <input className="input is-small is-static py-4 px-5" type="text" name="comment" placeholder="Add a comment..." />
-                    <button className="button is-ghost color-secondary" onClick={addComment}>Post</button>
+                    <form className='is-flex' onSubmit={addComment}>
+                      <input type="hidden" name="postId" value={post._id} />
+                      <input className="input is-small is-static py-4 px-5" type="text" name="comment" placeholder="Add a comment..." />
+                      <button className="button is-ghost color-secondary" type='submit'>Post</button>
+                    </form>
+
                   </footer>
                 </div>
               </div>
