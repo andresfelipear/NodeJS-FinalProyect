@@ -16,32 +16,11 @@ function PostDetailsPage() {
     const [otherComments, setOtherComments] = useState([])
     let cola;
 
-    const fetchPost = useCallback(() => {
-        //fetch post
-        fetch(process.env.REACT_APP_API_ENDPOINT + `api/user/getPostComments/${postId}`, {
-            method: "GET",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        }).then(async (response) => {
-            if (response.ok) {
-                const data = await response.json();
-                console.log(data)
-                setPost(data.post)
-                setComments(data.comments)
-                console.log(post);
-                console.log(comments)
-            }
-            else {
-                setError("Error fetching data (post)")
-            }
-        });
-    }, [post])
 
-    // //fetch comments for that post
-    // const fetchComments = useCallback(() => {
-    //     fetch(process.env.REACT_APP_API_ENDPOINT + `api/user/getComments/${postId}`, {
+    // //fetch comments and posts
+    // const fetchPostComments = useCallback(() => {
+    //     //fetch post
+    //     fetch(process.env.REACT_APP_API_ENDPOINT + `api/user/getPostComments/${postId}`, {
     //         method: "GET",
     //         credentials: "include",
     //         headers: {
@@ -50,14 +29,56 @@ function PostDetailsPage() {
     //     }).then(async (response) => {
     //         if (response.ok) {
     //             const data = await response.json();
+    //             console.log(data)
+    //             setPost(data.post)
     //             setComments(data.comments)
+    //             console.log(post);
     //             console.log(comments)
     //         }
     //         else {
-    //             setError("Error fetching data (comments)")
+    //             setError("Error fetching data (post)")
     //         }
     //     });
-    // }, [comments])
+    // }, [post])
+
+    const fetchPost = useCallback(() => {
+        //fetch post
+        fetch(process.env.REACT_APP_API_ENDPOINT + `api/user/getPost/${postId}`, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }).then(async (response) => {
+            if (response.ok) {
+                const data = await response.json();
+                setPost(data.post)
+            }
+            else {
+                setError("Error fetching data (post)")
+            }
+        });
+    }, [post])
+
+    //fetch comments for that post
+    const fetchComments = useCallback(() => {
+        fetch(process.env.REACT_APP_API_ENDPOINT + `api/user/getComments/${postId}`, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }).then(async (response) => {
+            if (response.ok) {
+                const data = await response.json();
+                setComments(data.comments)
+                console.log(comments)
+            }
+            else {
+                setError("Error fetching data (comments)")
+            }
+        });
+    }, [comments])
 
     useEffect(() => {
         if (post.length === 0) {
@@ -65,11 +86,11 @@ function PostDetailsPage() {
         }
     }, [post]);
 
-    // useEffect(() => {
-    //     if (post.title) {
-    //         fetchComments();
-    //     }
-    // }, [post]);
+    useEffect(() => {
+        if (post.title) {
+            fetchComments();
+        }
+    }, [post]);
 
 
 
