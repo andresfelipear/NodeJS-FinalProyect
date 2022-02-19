@@ -4,13 +4,13 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 function AddPost() {
 
-    //query
+    //query string edit
     const {search} = useLocation();
     const myUrl = new URLSearchParams(search)
     const param = myUrl.get('edit')
-    const {postId} = useParams();
-    console.log(param)
 
+    //param postId
+    const {postId} = useParams();
 
     const [title, setTitle] = useState("")
     const [imageUrl, setImageUrl] = useState("")
@@ -19,11 +19,7 @@ function AddPost() {
     const [disabled, setDisabled] = useState(true);
     const [status, setStatus] = useState("");
     const [userContext, setUserContext] = useContext(UserContext);
-    const [post, setPost] = useState({
-        title: "title",
-        description: "description",
-        imageUrl: "imageUrl"
-    })
+    const [post, setPost] = useState()
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -51,7 +47,7 @@ function AddPost() {
         if (editing) {
           fetchPost();
         }
-      }, [editing, fetchPost, post.title]);
+      }, [editing, fetchPost]);
 
 
     useEffect(() => {

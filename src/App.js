@@ -10,6 +10,7 @@ import { useState, useContext, useEffect, useCallback } from 'react'
 
 import { UserContext } from './context/UserContext'
 import AddPost from './pages/private/AddPost';
+import PostDetailsPage from './pages/PostDetailsPage';
 
 function App() {
   const [userContext, setUserContext] = useContext(UserContext)
@@ -56,6 +57,7 @@ function App() {
         <Route path='/login' element={<LoginPage />} />
         <Route path='/admin/add-post/:postId' element={<AddPost />} />
         <Route path='/admin/add-post' element={<AddPost />} />
+        <Route path='/postDetails/:postId' element={<PostDetailsPage />} />
       </Routes>
       <Footer/>
     </div>

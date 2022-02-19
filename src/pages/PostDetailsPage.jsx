@@ -1,70 +1,126 @@
 import React from 'react'
-import { post } from '../../../backend/routes/admin.route'
+import { useEffect, useState, useContext, useCallback } from "react";
+import { useParams, useLocation, useNavigate } from 'react-router-dom'
 
 function PostDetailsPage() {
-    
+    //query string edit
+    const { search } = useLocation();
+    const myUrl = new URLSearchParams(search)
+    const queryAutofocus = myUrl.get('edit')
+
+    const { postId } = useParams();
+    const [post, setPost] = useState([])
+    const [comments, setComments] = useState([])
+    const [error, setError] = useState("")
+    const [autofocus, setAutofocus] = useState(queryAutofocus ? queryAutofocus : false)
+
+    const fetchPost = useCallback(() => {
+        //fetch post
+        fetch(process.env.REACT_APP_API_ENDPOINT + `api/user/getPost/${postId}`, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }).then(async (response) => {
+            if (response.ok) {
+                const data = await response.json();
+                setPost(data.post)
+            }
+            else {
+                setError("Error fetching data (post)")
+            }
+        });
+
+        //fetch comments for that post
+        fetch(process.env.REACT_APP_API_ENDPOINT + `api/user/getComments/${postId}`, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }).then(async (response) => {
+            if (response.ok) {
+                const data = await response.json();
+                setComments(data.comments)
+            }
+            else {
+                setError("Error fetching data (comments)")
+            }
+        });
+    }, [post])
+
+    useEffect(() => {
+        if (post.length === 0) {
+            fetchPost();
+        }
+    }, [post]);
+
+
+
     return (
-        <main class="container is-max-desktop mt-6">
-            <div class="card p-5">
-                <div class="card-header-title px-5">
-                    <div class="media-content">
-                        <p class="title is-4 is-capitalized">
+        <main className="container is-max-desktop mt-6">
+            {error && <div className="notification is-warning is-light p-2">
+                {error}
+            </div>}
+            <div className="card p-5">
+                <div className="card-header-title px-5">
+                    <div className="media-content">
+                        <p className="title is-4 is-capitalized">
                             {post.title}
                         </p>
-                        <p class="subtitle is-6">@{post.username}
+                        <p className="subtitle is-6">@{post.username}
                         </p>
                     </div>
                     <em>
-                        {new Intl.DateTimeFormat('en-GB', {
+                        {/* {new Intl.DateTimeFormat('en-GB', {
                             year: 'numeric', month: 'long', day: '2-digit',
                             hour: 'numeric', minute: 'numeric', hour12: true
-                        }).format(post.date)}
+                        }).format(post.date)} */}
+                        {post.date}
                     </em>
                 </div>
-                <div class="card-image px-5">
-                    <figure class="image is-4by3">
-                        <img src="/<%= post.imageUrl %>" alt="<%= post.title%>" width="100px" />
+                <div className="card-image px-5">
+                    <figure className="image is-4by3">
+                        <img src={`/images/${post.imageUrl}.jpg`} alt={post.title} width="100px" />
                     </figure>
                 </div>
-                <div class="card-content">
-                    <div class="content has-text-justified">
+                <div className="card-content">
+                    <div className="content has-text-justified">
                         {post.description}
 
                     </div>
                 </div>
-                {autofocus ? (<div class="panel" tabindex="0" autofocus />) : (<div class="panel" tabindex="0" />)}
-                {post.comment && (<div className="panel">
-                    <p class="panel-heading">
+                {/* {autofocus ? (<div className="panel" tabIndex="0" autofocus />) : (<div className="panel" tabIndex="0" />)} */}
+
+                <div className="panel">
+                    <p className="panel-heading">
                         Comments
                     </p>
+                    {comments.map((comment) => {
+                        <a className="panel-block">
+                            <span className="panel-icon">
+                                <i className="fas fa-user-astronaut"></i>
+                            </span>
+                            <div className="is-italic ml-2">
 
-                    {
-                        post.map((comment) => {
-                            <a class="panel-block">
-                                <span class="panel-icon">
-                                    <i class="fas fa-user-astronaut"></i>
-                                </span>
-                                <div class="is-italic ml-2">
-
-                                    <div class="title is-6">
-                                        {comment.comment}
-                                    </div>
-                                    <div class="subtitle is-6">
-                                        {new Intl.DateTimeFormat('en-GB', {
+                                <div className="title is-6">
+                                    {comment.comment}
+                                </div>
+                                <div className="subtitle is-6">
+                                    {/* {new Intl.DateTimeFormat('en-GB', {
                                             year: 'numeric', month: 'long',
                                             day: '2-digit', hour: 'numeric', minute: 'numeric', hour12: true
-                                        }).format(comment.date)}
-                                    </div>
+                                        }).format(comment.date)} */}
+                                    {comment.date}
                                 </div>
+                            </div>
 
 
-                            </a>
-                        })
+                        </a>
+                    })
                     }
-                </div>)}
-
-                )
-
+                </div>
             </div>
 
         </main >

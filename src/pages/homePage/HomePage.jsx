@@ -151,7 +151,7 @@ function HomePage() {
                     </div>
                   </div>
                   <footer className="card-footer">
-                    <a className="card-footer-item color-secondary" href={`/posts/${post._id}`}>Details</a>
+                    <a className="card-footer-item color-secondary" href={`/postDetails/${post._id}`}>Details</a>
 
                     {userContext.details && (
                       <>
