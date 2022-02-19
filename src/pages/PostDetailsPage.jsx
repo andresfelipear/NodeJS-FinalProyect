@@ -18,7 +18,7 @@ function PostDetailsPage() {
 
     const fetchPost = useCallback(() => {
         //fetch post
-        fetch(process.env.REACT_APP_API_ENDPOINT + `api/user/getPost/${postId}`, {
+        fetch(process.env.REACT_APP_API_ENDPOINT + `api/user/getPostComments/${postId}`, {
             method: "GET",
             credentials: "include",
             headers: {
@@ -27,7 +27,11 @@ function PostDetailsPage() {
         }).then(async (response) => {
             if (response.ok) {
                 const data = await response.json();
+                console.log(data)
                 setPost(data.post)
+                setComments(data.comments)
+                console.log(post);
+                console.log(comments)
             }
             else {
                 setError("Error fetching data (post)")
@@ -35,37 +39,37 @@ function PostDetailsPage() {
         });
     }, [post])
 
-    //fetch comments for that post
-    const fetchComments = useCallback(() => {
-        fetch(process.env.REACT_APP_API_ENDPOINT + `api/user/getComments/${postId}`, {
-            method: "GET",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        }).then(async (response) => {
-            if (response.ok) {
-                const data = await response.json();
-                setComments(data.comments)
-                console.log(comments)
-            }
-            else {
-                setError("Error fetching data (comments)")
-            }
-        });
-    }, [comments])
+    // //fetch comments for that post
+    // const fetchComments = useCallback(() => {
+    //     fetch(process.env.REACT_APP_API_ENDPOINT + `api/user/getComments/${postId}`, {
+    //         method: "GET",
+    //         credentials: "include",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //     }).then(async (response) => {
+    //         if (response.ok) {
+    //             const data = await response.json();
+    //             setComments(data.comments)
+    //             console.log(comments)
+    //         }
+    //         else {
+    //             setError("Error fetching data (comments)")
+    //         }
+    //     });
+    // }, [comments])
 
     useEffect(() => {
-        if (comments.length === 0) {
+        if (post.length === 0) {
             fetchPost();
         }
-    }, [comments]);
-
-    useEffect(() => {
-        if (post.title) {
-            fetchComments();
-        }
     }, [post]);
+
+    // useEffect(() => {
+    //     if (post.title) {
+    //         fetchComments();
+    //     }
+    // }, [post]);
 
 
 
