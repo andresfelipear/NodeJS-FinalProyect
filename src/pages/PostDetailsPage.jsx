@@ -6,7 +6,7 @@ function PostDetailsPage() {
     //query string edit
     const { search } = useLocation();
     const myUrl = new URLSearchParams(search)
-    const queryAutofocus = myUrl.get('edit')
+    const queryAutofocus = myUrl.get('autofocus')
 
     const { postId } = useParams();
     const [post, setPost] = useState([])
@@ -91,9 +91,9 @@ function PostDetailsPage() {
 
                     </div>
                 </div>
-                {/* {autofocus ? (<div className="panel" tabIndex="0" autofocus />) : (<div className="panel" tabIndex="0" />)} */}
+                {/* {autofocus ? (<div className="panel" tabIndex="0" autoFocus />) : (<div className="panel" tabIndex="0" />)} */}
 
-                <div className="panel">
+                <div className="panel" tabIndex="0" ref={(element) => {if(autofocus)element?.focus?.()}}>
                     <p className="panel-heading">
                         Comments
                     </p>

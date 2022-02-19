@@ -127,7 +127,7 @@ function HomePage() {
                       </div>
                       <div className="pl-2" >
                         <span className="p-8  ">
-                          <a className="buttons-like-commit" href={`/posts/${post._id}?autofocus=true`}> <i className="far fa-comments"></i></a>
+                          <a className="buttons-like-commit" href={`/postDetails/${post._id}?autofocus=true`}> <i className="far fa-comments"></i></a>
                         </span>
                       </div>
                     </div>
