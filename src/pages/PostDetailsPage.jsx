@@ -13,6 +13,8 @@ function PostDetailsPage() {
     const [comments, setComments] = useState([])
     const [error, setError] = useState("")
     const [autofocus, setAutofocus] = useState(queryAutofocus ? queryAutofocus : false)
+    const [otherComments, setOtherComments] = useState([])
+    let cola;
 
     const fetchPost = useCallback(() => {
         //fetch post
@@ -31,8 +33,10 @@ function PostDetailsPage() {
                 setError("Error fetching data (post)")
             }
         });
+    }, [post])
 
-        //fetch comments for that post
+    //fetch comments for that post
+    const fetchComments = useCallback(() => {
         fetch(process.env.REACT_APP_API_ENDPOINT + `api/user/getComments/${postId}`, {
             method: "GET",
             credentials: "include",
@@ -43,18 +47,28 @@ function PostDetailsPage() {
             if (response.ok) {
                 const data = await response.json();
                 setComments(data.comments)
+                console.log(comments)
             }
             else {
                 setError("Error fetching data (comments)")
             }
         });
-    }, [post])
+    }, [comments])
 
     useEffect(() => {
-        if (post.length === 0) {
+        if (comments.length === 0) {
             fetchPost();
         }
+    }, [comments]);
+
+    useEffect(() => {
+        if (post.title) {
+            fetchComments();
+        }
     }, [post]);
+
+
+
 
 
 
@@ -93,7 +107,7 @@ function PostDetailsPage() {
                 </div>
                 {/* {autofocus ? (<div className="panel" tabIndex="0" autoFocus />) : (<div className="panel" tabIndex="0" />)} */}
 
-                <div className="panel" tabIndex="0" ref={(element) => {if(autofocus)element?.focus?.()}}>
+                <div className="panel" tabIndex="0" ref={(element) => { if (autofocus) element?.focus?.() }}>
                     <p className="panel-heading">
                         Comments
                     </p>
