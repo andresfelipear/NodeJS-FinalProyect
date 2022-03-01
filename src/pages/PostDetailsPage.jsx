@@ -1,6 +1,10 @@
 import React from 'react'
 import { useEffect, useState, useContext, useCallback } from "react";
 import { useParams, useLocation, useNavigate } from 'react-router-dom'
+import {
+    Heading,
+    Notification,
+  } from "react-bulma-components";
 
 function PostDetailsPage() {
     //query string edit
@@ -14,34 +18,10 @@ function PostDetailsPage() {
     const [error, setError] = useState("")
     const [autofocus, setAutofocus] = useState(queryAutofocus ? queryAutofocus : false)
     const [otherComments, setOtherComments] = useState([])
-    let cola;
-
-
-    // //fetch comments and posts
-    // const fetchPostComments = useCallback(() => {
-    //     //fetch post
-    //     fetch(process.env.REACT_APP_API_ENDPOINT + `api/user/getPostComments/${postId}`, {
-    //         method: "GET",
-    //         credentials: "include",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //     }).then(async (response) => {
-    //         if (response.ok) {
-    //             const data = await response.json();
-    //             console.log(data)
-    //             setPost(data.post)
-    //             setComments(data.comments)
-    //             console.log(post);
-    //             console.log(comments)
-    //         }
-    //         else {
-    //             setError("Error fetching data (post)")
-    //         }
-    //     });
-    // }, [post])
+    const [isLoading, setIsLoading] = useState(false);
 
     const fetchPost = useCallback(() => {
+        setIsLoading(true);
         //fetch post
         fetch(process.env.REACT_APP_API_ENDPOINT + `api/user/getPost/${postId}`, {
             method: "GET",
@@ -53,15 +33,18 @@ function PostDetailsPage() {
             if (response.ok) {
                 const data = await response.json();
                 setPost(data.post)
+                setIsLoading(false);
             }
             else {
                 setError("Error fetching data (post)")
+                setIsLoading(false);
             }
-        });
+        }).catch(err => { console.log(err); setIsLoading(false) });
     }, [post])
 
     //fetch comments for that post
     const fetchComments = useCallback(() => {
+        setIsLoading(true)
         fetch(process.env.REACT_APP_API_ENDPOINT + `api/user/getComments/${postId}`, {
             method: "GET",
             credentials: "include",
@@ -72,12 +55,13 @@ function PostDetailsPage() {
             if (response.ok) {
                 const data = await response.json();
                 setComments(data.comments)
-                console.log(comments)
+                setIsLoading(false);
             }
             else {
                 setError("Error fetching data (comments)")
+                setIsLoading(false);
             }
-        });
+        }).catch(err =>{console.log(err); setIsLoading(false);});
     }, [comments])
 
     useEffect(() => {
@@ -92,10 +76,19 @@ function PostDetailsPage() {
         }
     }, [post]);
 
+    useEffect(() => {
+        console.log(comments)
+    }, [comments]);
 
 
 
-
+    if (isLoading) {
+        return(
+            <Notification>
+                <Heading>Loading...</Heading>
+            </Notification>
+        )
+    }
 
     return (
         <main className="container is-max-desktop mt-6">
@@ -136,7 +129,8 @@ function PostDetailsPage() {
                     <p className="panel-heading">
                         Comments
                     </p>
-                    {comments.map((comment) => {
+                    {comments && comments?.map((comment) =>
+                    (
                         <a className="panel-block">
                             <span className="panel-icon">
                                 <i className="fas fa-user-astronaut"></i>
@@ -148,17 +142,19 @@ function PostDetailsPage() {
                                 </div>
                                 <div className="subtitle is-6">
                                     {/* {new Intl.DateTimeFormat('en-GB', {
-                                            year: 'numeric', month: 'long',
-                                            day: '2-digit', hour: 'numeric', minute: 'numeric', hour12: true
-                                        }).format(comment.date)} */}
+                                        year: 'numeric', month: 'long',
+                                        day: '2-digit', hour: 'numeric', minute: 'numeric', hour12: true
+                                    }).format(comment.date)} */}
                                     {comment.date}
                                 </div>
                             </div>
 
 
                         </a>
-                    })
-                    }
+                    )
+                    )}
+
+
                 </div>
             </div>
 

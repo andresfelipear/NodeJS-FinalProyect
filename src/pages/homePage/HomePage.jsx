@@ -16,10 +16,12 @@ function HomePage() {
   const [posts, setPosts] = useState([])
   const { fetchData, setFetchData } = useState(true)
   const [userContext, setUserContext] = useContext(UserContext);
+  const [loading, setLoading] = useState(false)
 
   // const [comment, setComment] = useContext("")
 
   const fetchPosts = useCallback(() => {
+    setLoading(true);
     fetch(process.env.REACT_APP_API_ENDPOINT + "api/user/getPosts", {
       method: "GET",
       credentials: "include",
@@ -35,7 +37,8 @@ function HomePage() {
       else {
         setError("Error fetching data")
       }
-    });
+      setLoading(false);
+    }).catch(err => { console.log(err); setLoading(false) });
   }, [posts])
 
   useEffect(() => {
@@ -112,6 +115,13 @@ function HomePage() {
       }
     })
 
+  }
+  if (loading) {
+    return (
+      <Notification>
+        <Heading>Loading...</Heading>
+      </Notification>
+    )
   }
   return (
     <main>
