@@ -137,7 +137,7 @@ function HomePage() {
                 <div className="card">
                   <div className="card-image">
                     <figure className="image is-4by3">
-                      <img src={`/images/${post.imageUrl}.jpg`}
+                      <img src={`/images/${post.imageUrl}.webp`}
                         alt={post.title} width="100px" />
                     </figure>
                   </div>
