@@ -114,7 +114,7 @@ function PostDetailsPage() {
                 </div>
                 <div className="card-image px-5">
                     <figure className="image is-4by3">
-                        <img src={`/images/${post.imageUrl}.jpg`} alt={post.title} width="100px" />
+                        <img src={`/images/${post.imageUrl}.${process.env.REACT_APP_API_FORMAT_IMAGES}`} alt={post.title} width="100px" />
                     </figure>
                 </div>
                 <div className="card-content">
