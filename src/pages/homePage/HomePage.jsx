@@ -31,7 +31,7 @@ function HomePage() {
     }).then(async (response) => {
       if (response.ok) {
         const data = await response.json();
-        setPosts(data.posts)
+        setPosts(data.posts);
         setFetchData(false);
       }
       else {
@@ -39,13 +39,13 @@ function HomePage() {
       }
       setLoading(false);
     }).catch(err => { console.log(err); setLoading(false) });
-  }, [posts])
+  }, [setFetchData])
 
   useEffect(() => {
     if (posts.length === 0) {
       fetchPosts();
     }
-  }, [fetchData]);
+  }, [posts.length, fetchPosts]);
 
   const submitLike = (event) => {
     const postId = event.target.postId.value;
@@ -187,7 +187,7 @@ function HomePage() {
                         <Link className='card-footer-item color-secondary' to={`/admin/add-post/${post._id}?edit=true`}>Edit</Link>
                         <form className='formDeletePost' onSubmit={deletePost}>
                           <input type="hidden" name="postId" value={post._id} />
-                          <a className="card-footer-item color-secondary" href="#">
+                          <a className="card-footer-item color-secondary">
                             <button className='button is-ghost has-text-info' type="submit">Delete</button>
                           </a>
                         </form>
