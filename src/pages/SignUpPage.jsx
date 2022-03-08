@@ -26,7 +26,7 @@ export default function SignUpPage() {
     const [icon, setIcon] = useState(iconTie);
     const [selectAvatar, setSelectAvatar] = useState("")
 
-    
+
 
     const [userContext, setUserContext] = useContext(UserContext)
 
@@ -75,17 +75,17 @@ export default function SignUpPage() {
         }
     }, [password, confirmPassword])
 
-    useEffect(()=>{
-        if(selectAvatar){
-            if(selectAvatar === "avatar 1"){
+    useEffect(() => {
+        if (selectAvatar) {
+            if (selectAvatar === "avatar 1") {
                 setIcon(iconTie)
-            }else if(selectAvatar === "avatar 2"){
+            } else if (selectAvatar === "avatar 2") {
                 setIcon(iconNinja)
             }
-            else if(selectAvatar === "avatar 3"){
+            else if (selectAvatar === "avatar 3") {
                 setIcon(iconPlus)
             }
-            else if(selectAvatar === "avatar 4"){
+            else if (selectAvatar === "avatar 4") {
                 setIcon(iconAstronaut)
             }
         }
@@ -97,7 +97,7 @@ export default function SignUpPage() {
 
     return (
         <main className="section mt-6 ">
-            
+
 
             <div className="widthForm has-background-light">
                 {status === "error" && (
@@ -114,31 +114,30 @@ export default function SignUpPage() {
                         <Button remove role="alertdialog" onClick={() => setStatus("")} />
                     </Notification>
                 )}
+                <label className="label" htmlFor="username">Username</label>
+                <div className="field has-addons">
 
-                <div className="field">
-                    <label className="label" htmlFor="username">Username</label>
-                    <div className="control">
-                        <input className="input" type="text" name="username" onChange={(e) => setUsername(e.target.value)} />
-                    </div>
-                </div>
-                <div className="field">
-                    <label className="label" htmlFor="avatar">Avatar</label>
                     <div className="control has-icons-left">
                         <div className="select">
-                            <select onChange={(e)=> setSelectAvatar(e.target.value)}>
-                                <option>avatar 1</option>
-                                <option>avatar 2</option>
-                                <option>avatar 3</option>
-                                <option>avatar 4</option>
+                            <select onChange={(e) => setSelectAvatar(e.target.value)}>
+                                <option value="avatar 1">#1</option>
+                                <option value="avatar 2">#2</option>
+                                <option value="avatar 3">#3</option>
+                                <option value="avatar 4">#4</option>
                             </select>
                         </div>
-                        
+
                         <div className="icon is-small is-left">
                             <i className={`fas ${icon && icon}`}></i>
                         </div>
 
                     </div>
+
+                    <input className="input" type="text" name="username" onChange={(e) => setUsername(e.target.value)} />
+
                 </div>
+
+
                 <div className="field">
                     <label className="label" htmlFor="email">Email</label>
                     <div className="control">

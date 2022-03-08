@@ -16,7 +16,7 @@ code {
 }
 
 .widthForm{
-  width: 35vw;
+  max-width: 410px;
   margin: auto;
   padding: 70px 50px;
   border-radius: 10px;
