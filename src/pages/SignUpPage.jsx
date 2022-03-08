@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from "react";
+import { useLocation, useNavigate } from 'react-router-dom'
 import React from 'react'
 import {
     Heading,
@@ -26,7 +27,8 @@ export default function SignUpPage() {
     const [icon, setIcon] = useState(iconTie);
     const [selectAvatar, setSelectAvatar] = useState("")
 
-
+    const navigate = useNavigate()
+    const location = useLocation()
 
     const [userContext, setUserContext] = useContext(UserContext)
 
@@ -57,6 +59,8 @@ export default function SignUpPage() {
                 setStatus("success");
                 setIsLoading(false);
                 setUserContext(prev => ({ ...prev, token: data.token }))
+                let from = location.state?.from?.pathname || '/'
+                navigate(from, { replace: true })
             })
             .catch((err) => {
                 setStatus("error");
@@ -104,13 +108,6 @@ export default function SignUpPage() {
                     <Notification>
                         <Heading>Error Signing Up!</Heading>
                         Username and/or Email already exists
-                        <Button remove role="alertdialog" onClick={() => setStatus("")} />
-                    </Notification>
-                )}
-                {status === "success" && (
-                    <Notification>
-                        <Heading>Signed Up Successfully</Heading>
-                        Click <a href="/login">here</a> to go to Login page
                         <Button remove role="alertdialog" onClick={() => setStatus("")} />
                     </Notification>
                 )}

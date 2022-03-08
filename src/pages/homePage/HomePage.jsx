@@ -195,9 +195,9 @@ function HomePage() {
                       </>)}
                   </footer>
                   <footer className="card-footer">
-                    <form className='is-flex' onSubmit={addComment}>
+                    <form className='is-flex card-footer-item py-1 px-2' onSubmit={addComment}>
                       <input type="hidden" name="postId" value={post._id} />
-                      <input className="input is-small is-static py-4 px-5" type="text" name="comment" placeholder="Add a comment..." />
+                      <input className="input is-small is-static" type="text" name="comment" placeholder="Add a comment..." />
                       <button className="button is-ghost color-secondary" type='submit'>Post</button>
                     </form>
 
