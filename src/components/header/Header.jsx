@@ -84,7 +84,12 @@ function Header() {
                         {userContext.details ? (
                             <>
                                 <div className="navbar-item">
-                                    {userContext.details.username}
+                                    <div class="icon-text">
+                                        <span class="icon has-text-warning">
+                                            <i className={`fas ${userContext.details.icon}`}></i>
+                                        </span>
+                                        <span>{userContext.details.username}</span>
+                                    </div>
                                 </div>
                                 <div className="navbar-item">
                                     <button className="button is-light" type="submit" onClick={logoutHandler}> Log Out </button>

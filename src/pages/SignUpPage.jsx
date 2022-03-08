@@ -37,7 +37,7 @@ export default function SignUpPage() {
     };
 
     const submit = () => {
-        const body = { username, email, password };
+        const body = { username, email, password, icon };
         setIsLoading(true);
         fetch("http://localhost:8000/api/user/signup", {
             method: "POST",
