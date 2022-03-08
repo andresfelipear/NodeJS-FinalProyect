@@ -131,7 +131,7 @@ function AddPost() {
                 <div className="field">
                     <label className="label" htmlFor="title">Description</label>
                     <div className="control">
-                        <input type="textarea" className="textarea" name="description" rows="5" value={description} onChange={(e) => setDescription(e.target.value)}/>
+                        <textarea type="textarea" className="textarea" name="description" value={description} onChange={(e) => setDescription(e.target.value)}/>
                     </div>
                 </div>
 

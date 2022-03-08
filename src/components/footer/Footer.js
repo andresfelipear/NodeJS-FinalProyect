@@ -6,7 +6,7 @@ export default function Footer() {
             <p style={{
                 fontSize: "12px",
                 fontStyle: "italic",
-            }}>© 2021 Andres Arevalo - Travels App </p>
+            }}>© 2022 Andres Arevalo - Travels App </p>
         </div>
     )
 }

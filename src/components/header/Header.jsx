@@ -84,8 +84,8 @@ function Header() {
                         {userContext.details ? (
                             <>
                                 <div className="navbar-item">
-                                    <div class="icon-text">
-                                        <span class="icon has-text-warning">
+                                    <div className="icon-text">
+                                        <span className="icon has-text-warning">
                                             <i className={`fas ${userContext.details.icon}`}></i>
                                         </span>
                                         <span>{userContext.details.username}</span>
