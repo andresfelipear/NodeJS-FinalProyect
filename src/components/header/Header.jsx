@@ -36,8 +36,6 @@ function Header() {
     }, [fetchUserDetails, userContext.details]);
 
     const logoutHandler = () => {
-        console.log("print contex token");
-        console.log(userContext.token)
         fetch("http://localhost:8000/api/user/logout", {
             method: "GET",
             credentials: "include",

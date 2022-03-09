@@ -124,8 +124,8 @@ export default function SignUpPage() {
                             </select>
                         </div>
 
-                        <div className="icon is-small is-left">
-                            <i className={`fas ${icon && icon}`}></i>
+                        <div className="icon is-large is-left has-text-info">
+                            <i className={`fas fa-lg ${icon && icon}`}></i>
                         </div>
 
                     </div>
