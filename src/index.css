@@ -19,6 +19,9 @@ code {
   max-width: 410px;
   margin: auto;
   padding: 70px 50px;
+}
+
+.borderRadius{
   border-radius: 10px;
 }
 

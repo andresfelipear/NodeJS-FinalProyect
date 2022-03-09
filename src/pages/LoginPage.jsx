@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useEffect, useState, useContext } from "react";
 import {
   Heading,
@@ -92,6 +92,7 @@ function LoginPage() {
           <div className="control">
             <input className="input" type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
           </div>
+          <Link className='has-text-info is-italic has-text-weight-light' to={"/forgotPassword"}> Forgot Password?</Link>
         </div>
         <div className="is-flex is-justify-content-center mt-4">
           <button

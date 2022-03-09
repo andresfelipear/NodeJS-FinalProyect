@@ -6,6 +6,7 @@ import SignUpPage from './pages/SignUpPage';
 import HomePage from './pages/homePage/HomePage';
 import LoginPage from './pages/LoginPage';
 import Footer from './components/footer/Footer';
+import ForgotPassword from './pages/ForgotPassword';
 import { useState, useContext, useEffect, useCallback } from 'react'
 
 import { UserContext } from './context/UserContext'
@@ -55,6 +56,7 @@ function App() {
         <Route path='/' element={<HomePage />} />
         <Route path='/signup' element={<SignUpPage />} />
         <Route path='/login' element={<LoginPage />} />
+        <Route path='/forgotPassword' element={<ForgotPassword />} />
         <Route path='/admin/add-post/:postId' element={<AddPost />} />
         <Route path='/admin/add-post' element={<AddPost />} />
         <Route path='/postDetails/:postId' element={<PostDetailsPage />} />
