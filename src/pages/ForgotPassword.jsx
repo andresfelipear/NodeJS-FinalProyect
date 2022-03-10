@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useEffect, useState, useContext } from "react";
 import {
     Heading,
@@ -14,16 +14,39 @@ function ForgotPassword() {
     const [status, setStatus] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [disabled, setDisabled] = useState(true);
+    const [notiTitle, setNotiTitle] = useState("")
+    const [notiBody, setNotiBody] = useState("")
 
     const [userContext, setUserContext] = useContext(UserContext)
 
     const navigate = useNavigate()
     const location = useLocation()
 
+    const openModal = (title, message) => {
+        const modalContainer = document.getElementById("modal-container");
+        modalContainer.classList.add("is-active");
+        setNotiTitle(title);
+        setNotiBody(message);
+
+    }
+
+    const closeModal = () => {
+        const modalContainer = document.getElementById("modal-container");
+        modalContainer.classList.remove("is-active");
+        setStatus("")
+        if (notiTitle === "Recovery email send") {
+            let from = location.state?.from?.pathname || '/login'
+            navigate(from, { replace: true })
+        }
+
+
+    }
+
+
     const submit = () => {
         const body = { username };
         setIsLoading(true);
-        fetch("http://localhost:8000/api/user/login", {
+        fetch("http://localhost:8000/api/user/forgot", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body),
@@ -34,11 +57,10 @@ function ForgotPassword() {
                     setIsLoading(false);
                     throw new Error(res.status);
                 } else {
-                    const data = await res.json()
+                    await res.json()
                     setStatus("success");
                     setIsLoading(false);
-                    let from = location.state?.from?.pathname || '/login'
-                    navigate(from, { replace: true })
+                    openModal("Recovery email send", "Please check your email.");
 
                 }
                 return res.json();
@@ -46,6 +68,7 @@ function ForgotPassword() {
             .catch((err) => {
                 setStatus("error");
                 setIsLoading(false);
+                openModal("Error Recovery", "Username that you entered not exist. Try Again.");
             });
     };
 
@@ -65,25 +88,7 @@ function ForgotPassword() {
         <main className="section mt-6 widthForm ">
 
             <div className="title is-3">Forgot Password</div>
-
-            {status === "error" && (
-                <Notification color='warning'>
-                    <Heading >Error Recovery</Heading>
-                    Username that you entered not exist. Try Again.
-                    <Button remove role="alertdialog" onClick={() => setStatus("")} />
-                </Notification>
-            )}
-            {/* {status === "success" && (
-          <Notification>
-            <Heading>Username found</Heading>
-            Please check your email
-            <Button remove role="alertdialog" onClick={() => setStatus("")} />
-          </Notification>
-            )} */}
-
             <div className="has-background-light p-6 borderRadius">
-
-
                 <div className="field">
                     <label className="label" htmlFor="username">Username</label>
                     <div className="control">
@@ -105,8 +110,17 @@ function ForgotPassword() {
                 {isLoading && <span>Loading...</span>}
             </div>
 
+            <div className="modal" id="modal-container">
+                <div className="modal-background"></div>
+                <div className="modal-content">
 
-
+                    <Notification p={5} m={6} color="warning">
+                        <Heading mb={2} >{notiTitle}</Heading>
+                        {notiBody}.
+                    </Notification>
+                </div>
+                <button className="modal-close is-large" aria-label="close" onClick={closeModal}></button>
+            </div>
         </main>
     )
 }

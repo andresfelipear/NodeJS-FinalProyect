@@ -63,24 +63,22 @@ function LoginPage() {
 
 
   return (
-    <main className="section mt-6 ">
-
-      <div className="widthForm has-background-light">
-        {status === "error" && (
-          <Notification>
-            <Heading>Error Login!</Heading>
-            Username or password that you entered is incorrect. Use a valid credential and try again.
-            <Button remove role="alertdialog" onClick={() => setStatus("")} />
-          </Notification>
-        )}
-        {/* {status === "success" && (
+    <main className="section mt-6 widthForm">
+      {status === "error" && (
+            <Notification>
+              <Heading>Error Login!</Heading>
+              Username or password that you entered is incorrect. Use a valid credential and try again.
+              <Button remove role="alertdialog" onClick={() => setStatus("")} />
+            </Notification>
+          )}
+          {/* {status === "success" && (
           <Notification>
             <Heading>Signed Up Successfully</Heading>
             Click <a href='/'>here</a> to go to main Page
             <Button remove role="alertdialog" onClick={() => setStatus("")} />
           </Notification>
         )} */}
-
+      <div className="p-6 borderRadius has-background-light">
         <div className="field">
           <label className="label" htmlFor="username">Username</label>
           <div className="control">
@@ -110,6 +108,7 @@ function LoginPage() {
       </div>
 
 
+          
 
     </main>
   )
