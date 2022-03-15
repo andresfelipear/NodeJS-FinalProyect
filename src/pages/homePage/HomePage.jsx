@@ -182,7 +182,7 @@ function HomePage() {
                   <footer className="card-footer">
                     <a className="card-footer-item color-secondary" href={`/postDetails/${post._id}`}>Details</a>
 
-                    {userContext.details && (
+                    {(userContext.details && ((userContext.details.username ===post.username)|| (userContext.details.username === "admin"))) && (
                       <>
                         <Link className='card-footer-item color-secondary' to={`/admin/add-post/${post._id}?edit=true`}>Edit</Link>
                         <form className='formDeletePost' onSubmit={deletePost}>
