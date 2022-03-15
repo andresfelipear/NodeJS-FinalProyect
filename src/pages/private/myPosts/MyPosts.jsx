@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect, useState, useContext, useCallback } from "react";
-import {UserContext} from "../../../context/UserContext"
+import { UserContext } from "../../../context/UserContext"
 import {
   Heading,
   Notification,
@@ -14,7 +14,6 @@ function MyPosts() {
 
   const [error, setError] = useState("");
   const [posts, setPosts] = useState([])
-  const { fetchData, setFetchData } = useState(true)
   const [userContext, setUserContext] = useContext(UserContext);
   const [loading, setLoading] = useState(false)
 
@@ -31,21 +30,22 @@ function MyPosts() {
     }).then(async (response) => {
       if (response.ok) {
         const data = await response.json();
-        setPosts(data.posts);
-        setFetchData(false);
+        if(userContext.details){
+          setPosts(data.posts.filter(post => post.username === userContext.details.username))
+        }
       }
       else {
         setError("Error fetching data")
       }
       setLoading(false);
     }).catch(err => { console.log(err); setLoading(false) });
-  }, [setFetchData])
+  }, [userContext.details])
 
   useEffect(() => {
-    if (posts.length === 0) {
+    if (userContext.details) {
       fetchPosts();
     }
-  }, [posts.length, fetchPosts]);
+  }, [fetchPosts, userContext.details]);
 
   const submitLike = (event) => {
     const postId = event.target.postId.value;
@@ -61,7 +61,6 @@ function MyPosts() {
     }).then(async (response) => {
       if (response.ok) {
         await response.json;
-        setFetchData(true);
       }
       else {
         setError("Error liking a post")
@@ -84,7 +83,6 @@ function MyPosts() {
     }).then(async (response) => {
       if (response.ok) {
         await response.json;
-        setFetchData(true);
       }
       else {
         setError("Error deleting post")
@@ -128,12 +126,12 @@ function MyPosts() {
       {error && <div className="notification is-warning is-light p-2">
         {error}
       </div>}
-      {userContext.details && (
-        <>
-          {
-            posts.length > 0 ? (
+      {
+        posts.length > 0 ? (
+          <>
+            {userContext.details && (
               <div className="columns is-multiline is-4 m-4">
-                {posts && posts.filter(post => post.username === userContext.details.username).map((post) => {
+                {posts && posts.map((post) => {
                   return (
                     <div className="column is-one-quarter" key={post.id}>
                       <div className="card">
@@ -183,16 +181,16 @@ function MyPosts() {
                         </div>
                         <footer className="card-footer">
                           <a className="card-footer-item color-secondary" href={`/postDetails/${post._id}`}>Details</a>
-                            <>
-                              <Link className='card-footer-item color-secondary' to={`/admin/add-post/${post._id}?edit=true`}>Edit</Link>
-                              <form className='formDeletePost' onSubmit={deletePost}>
-                                <input type="hidden" name="postId" value={post._id} />
-                                <a className="card-footer-item color-secondary">
-                                  <button className='button is-ghost has-text-info' type="submit">Delete</button>
-                                </a>
-                              </form>
+                          <>
+                            <Link className='card-footer-item color-secondary' to={`/admin/add-post/${post._id}?edit=true`}>Edit</Link>
+                            <form className='formDeletePost' onSubmit={deletePost}>
+                              <input type="hidden" name="postId" value={post._id} />
+                              <a className="card-footer-item color-secondary" href=''>
+                                <button className='button is-ghost has-text-info decNone' type="submit">Delete</button>
+                              </a>
+                            </form>
 
-                            </>
+                          </>
                         </footer>
                         <footer className="card-footer">
                           <form className='is-flex card-footer-item py-1 px-2' onSubmit={addComment}>
@@ -208,24 +206,27 @@ function MyPosts() {
 
                 })}
               </div>
-            ) : (
-              <div className=" container widthNotification has-background-light mt-6">
-                <Notification>
-                  <Heading>No Posts Found!</Heading>
-                  {userContext.details ?
-                    (<h1 className='subtitle mt-2'>Click < a href="/admin/add-post">here</a> to create a Post</h1>) :
-                    (<h1 className='subtitle'>Click < a href="/login">here</a> to go to Login page</h1>)
-                  }
+            )}
 
-                </Notification>
-              </div>
+          </>
 
-            )
-          }
-        </>
+        ) : (
+          <div className=" container widthNotification has-background-light mt-6">
+            <Notification>
+              <Heading>No Posts Found!</Heading>
+              {userContext.details ?
+                (<h1 className='subtitle mt-2'>Click < a href="/admin/add-post">here</a> to create a Post</h1>) :
+                (<h1 className='subtitle'>Click < a href="/login">here</a> to go to Login page</h1>)
+              }
+
+            </Notification>
+          </div>
+
+        )
+      }
 
 
-      )}
+
 
 
 

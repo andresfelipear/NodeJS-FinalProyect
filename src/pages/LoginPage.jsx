@@ -3,15 +3,13 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useEffect, useState, useContext } from "react";
 import {
   Heading,
-  Button,
   Notification,
 } from "react-bulma-components";
 import { UserContext } from '../context/UserContext'
 
 function LoginPage() {
   const [username, setUsername] = useState("");
-  const [password, setPassword] = useState(undefined);
-  const [status, setStatus] = useState("");
+  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [notiTitle, setNotiTitle] = useState("")
@@ -52,16 +50,14 @@ function LoginPage() {
           throw new Error(res.status);
         } else {
           const data = await res.json()
-          setStatus("success");
           setIsLoading(false);
           setUserContext(prev => ({ ...prev, token: data.token }))
           let from = location.state?.from?.pathname || '/'
           navigate(from, { replace: true })
+          return data
         }
-        return res.json();
       })
       .catch((err) => {
-        setStatus("error");
         setIsLoading(false);
         openModal("Error Login", "Username or password that you entered is incorrect. Use a valid credential and try again.");
       });
@@ -73,7 +69,6 @@ function LoginPage() {
     }
 
     return () => {
-      setStatus("")
       setIsLoading(false)
     }
   }, [password, username])

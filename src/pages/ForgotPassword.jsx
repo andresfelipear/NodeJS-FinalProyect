@@ -1,12 +1,10 @@
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import {
     Heading,
-    Button,
     Notification,
 } from "react-bulma-components";
-import { UserContext } from '../context/UserContext'
 
 function ForgotPassword() {
     const [username, setUsername] = useState("");

@@ -74,7 +74,13 @@ function Header() {
 
                     <div className="navbar-start">
                         <a className="navbar-item" href="/"> Posts </a>
-                        {userContext.details && (<a className="navbar-item" href="/admin/add-post"> Add Post </a>)}
+                        {userContext.details && (
+                            <>
+                            <a className="navbar-item" href="/admin/myPosts"> MyPosts </a>
+                            <a className="navbar-item" href="/admin/add-post"> Add Post </a> 
+                            </>
+                        
+                        )}
                     </div>
 
                     <div className="navbar-end">

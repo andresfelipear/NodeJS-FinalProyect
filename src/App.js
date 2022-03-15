@@ -63,7 +63,7 @@ function App() {
           <Route path='/admin/add-post' element={<AddPost />} />
           <Route path='/postDetails/:postId' element={<PostDetailsPage />} />
           <Route path='/passwordReset' element={<ResetPassword />} />
-          <Route path='/myPosts' element={<MyPosts />} />
+          <Route path='/admin/myPosts' element={<MyPosts />} />
         </Routes>
 
       <Footer />

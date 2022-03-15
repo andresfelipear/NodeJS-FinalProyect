@@ -38,7 +38,7 @@ function HomePage() {
         setError("Error fetching data")
       }
       setLoading(false);
-    }).catch(err => { console.log(err); setLoading(false) });
+    }).catch(err => { setLoading(false) });
   }, [setFetchData])
 
   useEffect(() => {
@@ -128,9 +128,9 @@ function HomePage() {
       {error && <div className="notification is-warning is-light p-2">
         {error}
       </div>}
-
       {posts.length > 0 ? (
         <div className="columns is-multiline is-4 m-4">
+          
           {posts && posts.map((post) => {
             return (
               <div className="column is-one-quarter" key={post.id}>
@@ -180,15 +180,17 @@ function HomePage() {
                     </div>
                   </div>
                   <footer className="card-footer">
-                    <a className="card-footer-item color-secondary" href={`/postDetails/${post._id}`}>Details</a>
+                    <a className="card-footer-item color-secondary" href={`/postDetails/${post._id}`}>
+                    <button className='button is-ghost has-text-info decNone'>Details</button>
+                      </a>
 
                     {(userContext.details && ((userContext.details.username ===post.username)|| (userContext.details.username === "admin"))) && (
                       <>
                         <Link className='card-footer-item color-secondary' to={`/admin/add-post/${post._id}?edit=true`}>Edit</Link>
                         <form className='formDeletePost' onSubmit={deletePost}>
                           <input type="hidden" name="postId" value={post._id} />
-                          <a className="card-footer-item color-secondary">
-                            <button className='button is-ghost has-text-info' type="submit">Delete</button>
+                          <a className="card-footer-item color-secondary" href="">
+                            <button className='button is-ghost has-text-info decNone' type="submit">Delete</button>
                           </a>
                         </form>
 
