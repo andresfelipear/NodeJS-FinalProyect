@@ -147,7 +147,7 @@ function HomePage() {
                         <form onSubmit={submitLike}>
                           <input type="hidden" name="postId" value={post._id} />
                           <button type="submit"
-                            className="buttons-like-commit button is-ghost p-0 "
+                            className="buttons-like-commit button is-ghost p-0 decNone "
                           >
                             <i className="far fa-thumbs-up p-8"></i>
                           </button>
@@ -181,7 +181,7 @@ function HomePage() {
                   </div>
                   <footer className="card-footer">
                     <a className="card-footer-item color-secondary" href={`/postDetails/${post._id}`}>
-                    <button className='button is-ghost has-text-info decNone'>Details</button>
+                    <button className='button is-ghost decNone'>Details</button>
                       </a>
 
                     {(userContext.details && ((userContext.details.username ===post.username)|| (userContext.details.username === "admin"))) && (
@@ -190,7 +190,7 @@ function HomePage() {
                         <form className='formDeletePost' onSubmit={deletePost}>
                           <input type="hidden" name="postId" value={post._id} />
                           <a className="card-footer-item color-secondary" href="">
-                            <button className='button is-ghost has-text-info decNone' type="submit">Delete</button>
+                            <button className='button is-ghost decNone' type="submit">Delete</button>
                           </a>
                         </form>
 

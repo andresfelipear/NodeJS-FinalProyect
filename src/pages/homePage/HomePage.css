@@ -27,8 +27,15 @@
 
   .decNone{
     text-decoration: none!important;
+    color:#0095f6!important; 
   }
   .decNone:focus{
     box-shadow: none!important;
+    color:#0095f6!important; 
+  }
+
+  .decNone:hover{
+    box-shadow: none!important;
+    color:#0095f6!important; 
   }
 
