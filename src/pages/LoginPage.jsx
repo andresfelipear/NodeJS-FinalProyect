@@ -14,11 +14,28 @@ function LoginPage() {
   const [status, setStatus] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
+  const [notiTitle, setNotiTitle] = useState("")
+  const [notiBody, setNotiBody] = useState("")
 
   const [userContext, setUserContext] = useContext(UserContext)
 
   const navigate = useNavigate()
   const location = useLocation()
+
+  const openModal = (title, message) => {
+    const modalContainer = document.getElementById("modal-container");
+    modalContainer.classList.add("is-active");
+    setNotiTitle(title);
+    setNotiBody(message);
+  }
+
+  const closeModal = () => {
+    const modalContainer = document.getElementById("modal-container");
+    modalContainer.classList.remove("is-active");
+    setPassword("");
+    setUsername("");
+
+  }
 
   const submit = () => {
     const body = { username, password };
@@ -46,6 +63,7 @@ function LoginPage() {
       .catch((err) => {
         setStatus("error");
         setIsLoading(false);
+        openModal("Error Login", "Username or password that you entered is incorrect. Use a valid credential and try again.");
       });
   };
 
@@ -63,31 +81,17 @@ function LoginPage() {
 
   return (
     <main className="section mt-6 widthForm">
-      {status === "error" && (
-            <Notification>
-              <Heading>Error Login!</Heading>
-              Username or password that you entered is incorrect. Use a valid credential and try again.
-              <Button remove role="alertdialog" onClick={() => setStatus("")} />
-            </Notification>
-          )}
-          {/* {status === "success" && (
-          <Notification>
-            <Heading>Signed Up Successfully</Heading>
-            Click <a href='/'>here</a> to go to main Page
-            <Button remove role="alertdialog" onClick={() => setStatus("")} />
-          </Notification>
-        )} */}
       <div className="p-6 borderRadius has-background-light">
         <div className="field">
           <label className="label" htmlFor="username">Username</label>
           <div className="control">
-            <input className="input" type="text" name="username" onChange={(e) => setUsername(e.target.value)} />
+            <input className="input" type="text" name="username" onChange={(e) => setUsername(e.target.value)} value={username} />
           </div>
         </div>
         <div className="field">
           <label className="label" htmlFor="password">Password</label>
           <div className="control">
-            <input className="input" type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
+            <input className="input" type="password" name="password" onChange={(e) => setPassword(e.target.value)} value={password} />
           </div>
           <Link className='has-text-info is-italic has-text-weight-light' to={"/forgotPassword"}> Forgot Password?</Link>
         </div>
@@ -106,9 +110,17 @@ function LoginPage() {
         {isLoading && <span>Loading...</span>}
       </div>
 
+      <div className="modal" id="modal-container">
+        <div className="modal-background"></div>
+        <div className="modal-content">
 
-          
-
+          <Notification p={5} m={6} color="warning">
+            <Heading mb={2} >{notiTitle}</Heading>
+            {notiBody}.
+          </Notification>
+        </div>
+        <button className="modal-close is-large" aria-label="close" onClick={closeModal}></button>
+      </div>
     </main>
   )
 }

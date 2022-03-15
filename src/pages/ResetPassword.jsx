@@ -65,7 +65,6 @@ function ResetPassword() {
                 return res.json()
             })
             .catch((err) => {
-                console.log(err)
                 setStatus("error");
                 setIsLoading(false);
                 openModal("Error Recovery", "The reset token expires or the user do not exist. Try again");
