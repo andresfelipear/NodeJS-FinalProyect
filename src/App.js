@@ -13,6 +13,7 @@ import { UserContext } from './context/UserContext'
 import AddPost from './pages/private/AddPost';
 import PostDetailsPage from './pages/PostDetailsPage';
 import ResetPassword from './pages/ResetPassword';
+import MyPosts from './pages/private/myPosts/MyPosts'
 
 function App() {
   const [userContext, setUserContext] = useContext(UserContext)
@@ -62,6 +63,7 @@ function App() {
           <Route path='/admin/add-post' element={<AddPost />} />
           <Route path='/postDetails/:postId' element={<PostDetailsPage />} />
           <Route path='/passwordReset' element={<ResetPassword />} />
+          <Route path='/myPosts' element={<MyPosts />} />
         </Routes>
 
       <Footer />
