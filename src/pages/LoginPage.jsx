@@ -40,7 +40,6 @@ function LoginPage() {
           setUserContext(prev => ({ ...prev, token: data.token }))
           let from = location.state?.from?.pathname || '/'
           navigate(from, { replace: true })
-
         }
         return res.json();
       })

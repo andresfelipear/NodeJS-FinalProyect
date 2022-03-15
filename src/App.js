@@ -1,5 +1,5 @@
 import React from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, BrowserRouter } from 'react-router-dom'
 
 import Header from './components/header/Header';
 import SignUpPage from './pages/SignUpPage';
@@ -12,20 +12,21 @@ import { useState, useContext, useEffect, useCallback } from 'react'
 import { UserContext } from './context/UserContext'
 import AddPost from './pages/private/AddPost';
 import PostDetailsPage from './pages/PostDetailsPage';
+import ResetPassword from './pages/ResetPassword';
 
 function App() {
   const [userContext, setUserContext] = useContext(UserContext)
-  
+
   const verifyUser = useCallback(() => {
     fetch("http://localhost:8000/api/user/refreshToken", {
       method: 'POST',
       credentials: "include",
-      header: { "Content-Type":"application/json"}
-    }).then( async response => {
-      if(response.ok){
+      header: { "Content-Type": "application/json" }
+    }).then(async response => {
+      if (response.ok) {
         const data = await response.json()
         setUserContext(prev => ({ ...prev, token: data.token }))
-      }else{
+      } else {
         setUserContext(prev => ({ ...prev, token: null }))
       }
 
@@ -36,7 +37,7 @@ function App() {
   useEffect(() => verifyUser(), [verifyUser])
 
   const syncLogout = useCallback(event => {
-    if(event.key === 'logout'){
+    if (event.key === 'logout') {
       window.location.reload()
     }
   }, [])
@@ -52,16 +53,18 @@ function App() {
   return (
     <div className='App'>
       <Header />
-      <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route path='/signup' element={<SignUpPage />} />
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/forgotPassword' element={<ForgotPassword />} />
-        <Route path='/admin/add-post/:postId' element={<AddPost />} />
-        <Route path='/admin/add-post' element={<AddPost />} />
-        <Route path='/postDetails/:postId' element={<PostDetailsPage />} />
-      </Routes>
-      <Footer/>
+        <Routes>
+          <Route path='/' element={<HomePage />} />
+          <Route path='/signup' element={<SignUpPage />} />
+          <Route path='/login' element={<LoginPage />} />
+          <Route path='/forgotPassword' element={<ForgotPassword />} />
+          <Route path='/admin/add-post/:postId' element={<AddPost />} />
+          <Route path='/admin/add-post' element={<AddPost />} />
+          <Route path='/postDetails/:postId' element={<PostDetailsPage />} />
+          <Route path='/passwordReset' element={<ResetPassword />} />
+        </Routes>
+
+      <Footer />
     </div>
   );
 }

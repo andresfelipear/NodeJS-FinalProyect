@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { useEffect, useState, useContext } from "react";
 import {
     Heading,
@@ -8,16 +8,20 @@ import {
 } from "react-bulma-components";
 import { UserContext } from '../context/UserContext'
 
-function ForgotPassword() {
-    const [username, setUsername] = useState("");
+function ResetPassword() {
+    const [password, setPassword] = useState(undefined);
     const [status, setStatus] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [disabled, setDisabled] = useState(true);
     const [notiTitle, setNotiTitle] = useState("")
     const [notiBody, setNotiBody] = useState("")
 
+
     const navigate = useNavigate()
     const location = useLocation()
+    const [searchParams] = useSearchParams()
+    const userId = searchParams.get('id')
+    const token = searchParams.get('token') 
 
     const openModal = (title, message) => {
         const modalContainer = document.getElementById("modal-container");
@@ -40,9 +44,10 @@ function ForgotPassword() {
 
 
     const submit = () => {
-        const body = { username };
+        const body = { password, userId, token };
+        console.log(body)
         setIsLoading(true);
-        fetch("http://localhost:8000/api/user/forgot", {
+        fetch("http://localhost:8000/api/user/resetPassword", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body),
@@ -55,7 +60,7 @@ function ForgotPassword() {
                 } else {
                     setStatus("success");
                     setIsLoading(false);
-                    openModal("Recovery email send", "Please check your email");
+                    openModal("Password Confirm", "Please login with your new password");
                 }
                 return res.json()
             })
@@ -63,12 +68,12 @@ function ForgotPassword() {
                 console.log(err)
                 setStatus("error");
                 setIsLoading(false);
-                openModal("Error Recovery", "Username that you entered not exist. Try Again");
+                openModal("Error Recovery", "The reset token expires or the user do not exist. Try again");
             });
     };
 
     useEffect(() => {
-        if (username) {
+        if (password) {
             setDisabled(false)
         }
 
@@ -76,17 +81,17 @@ function ForgotPassword() {
             setStatus("")
             setIsLoading(false)
         }
-    }, [username])
+    }, [password])
 
     return (
         <main className="section mt-6 widthForm ">
 
-            <div className="title is-3">Forgot Password</div>
+            <div className="title is-3">Reset Password</div>
             <div className="has-background-light p-6 borderRadius">
                 <div className="field">
-                    <label className="label" htmlFor="username">Username</label>
+                    <label className="label" htmlFor="username">New Password</label>
                     <div className="control">
-                        <input className="input mb-3" type="text" name="username" onChange={(e) => setUsername(e.target.value)} />
+                        <input className="input mb-3" type="password" name="username" onChange={(e) => setPassword(e.target.value)} />
                     </div>
                 </div>
                 <div className="is-flex is-justify-content-center mt-4">
@@ -95,7 +100,7 @@ function ForgotPassword() {
                         disabled={disabled}
                         onClick={submit}
                         type="submit">
-                        Forgot Password
+                        Reset Password
                     </button>
 
                 </div>
@@ -119,4 +124,4 @@ function ForgotPassword() {
     )
 }
 
-export default ForgotPassword
+export default ResetPassword
