@@ -14,7 +14,7 @@ function AddPost() {
     const { postId } = useParams();
 
     const [title, setTitle] = useState("")
-    const [imageUrl, setImageUrl] = useState("")
+    const [imageUrl, setImageUrl] = useState("img1")
     const [description, setDescription] = useState("")
     const [editing, setEditing] = useState(param ? param : false)
     const [disabled, setDisabled] = useState(true);
@@ -54,6 +54,8 @@ function AddPost() {
     useEffect(() => {
         if (title && imageUrl && description) {
             setDisabled(false)
+        }else{
+            setDisabled(true)
         }
     }, [title, imageUrl, description])
 
@@ -127,7 +129,7 @@ function AddPost() {
 
                     <div className="control has-icons-left">
                         <div className="select">
-                            <select onChange={(e) => setImageUrl(e.target.value)}>
+                            <select defaultValue="img1" onChange={(e) => setImageUrl(e.target.value)}>
                                 <option value="img1">Image 1</option>
                                 <option value="img2">Image 2</option>
                                 <option value="img3">Image 3</option>

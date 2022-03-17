@@ -71,6 +71,8 @@ export default function SignUpPage() {
     useEffect(() => {
         if (password && confirmPassword) {
             setDisabled(password !== confirmPassword)
+        }else{
+            setDisabled(true)
         }
 
         return () => {

@@ -66,6 +66,8 @@ function LoginPage() {
   useEffect(() => {
     if (password && username) {
       setDisabled(false)
+    }else{
+      setDisabled(true)
     }
 
     return () => {

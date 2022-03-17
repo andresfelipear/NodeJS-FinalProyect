@@ -4,8 +4,9 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom'
 import {
     Heading,
     Notification,
-  } from "react-bulma-components";
-  import moment from 'moment'
+} from "react-bulma-components";
+import moment from 'moment'
+import { UserContext } from "../context/UserContext";
 
 function PostDetailsPage() {
     //query string edit
@@ -19,6 +20,9 @@ function PostDetailsPage() {
     const [error, setError] = useState("")
     const [autofocus, setAutofocus] = useState(queryAutofocus ? queryAutofocus : false)
     const [isLoading, setIsLoading] = useState(false);
+    const [userContext, setUserContext] = useContext(UserContext);
+    const [disabled, setDisabled] = useState(true);
+    const [comment, setComment] = useState("")
 
     const fetchPost = useCallback(() => {
         setIsLoading(true);
@@ -61,7 +65,7 @@ function PostDetailsPage() {
                 setError("Error fetching data (comments)")
                 setIsLoading(false);
             }
-        }).catch(err =>{console.log(err); setIsLoading(false);});
+        }).catch(err => { console.log(err); setIsLoading(false); });
     }, [comments])
 
     useEffect(() => {
@@ -77,13 +81,46 @@ function PostDetailsPage() {
     }, [post]);
 
     useEffect(() => {
-        console.log(comments)
     }, [comments]);
+
+    useEffect(() => {
+        if (comment) {
+            setDisabled(false)
+        }else{
+            setDisabled(true)
+        }
+
+        return () => {
+            setIsLoading(false)
+        }
+    }, [comment])
+
+    const addComment = (event) => {
+        const comment = event.target.comment.value;
+        const postId = event.target.postId.value;
+        fetch(process.env.REACT_APP_API_ENDPOINT + "api/admin/add-comment", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userContext.token}`,
+            },
+            body: JSON.stringify({ postId, comment }),
+            credentials: "include",
+
+        }).then(async (response) => {
+            if (response.ok) {
+                await response.json;
+            }
+            else {
+                setError("Error you should be logged for comment a post")
+            }
+        })
+    }
 
 
 
     if (isLoading) {
-        return(
+        return (
             <Notification>
                 <Heading>Loading...</Heading>
             </Notification>
@@ -135,14 +172,22 @@ function PostDetailsPage() {
                                     {comment.comment}
                                 </div>
                                 <div className="subtitle is-6">
-                                {moment(comment.date).format("MMMM Do YYYY, h:mm:ss a")}
+                                    {moment(comment.date).format("MMMM Do YYYY, h:mm:ss a")}
                                 </div>
                             </div>
-
-
                         </a>
                     )
                     )}
+                    <form className='is-flex is-align-items-center panel-heading py-1 px-5' onSubmit={addComment}>
+                        <input type="hidden" name="postId" value={post._id} />
+                        <input className="input is-small is-static" type="text" name="comment" value={comment} placeholder="Add a comment..." onChange={(e)=>setComment(e.target.value)} />
+                        <button
+                            className="button is-ghost has-text-black has-text-weight-medium" 
+                            type='submit'
+                            disabled={disabled}
+                        >Post
+                        </button>
+                    </form>
 
 
                 </div>
