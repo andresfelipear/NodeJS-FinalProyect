@@ -11,7 +11,7 @@ import { useState, useContext, useEffect, useCallback } from 'react'
 
 import { UserContext } from './context/UserContext'
 import AddPost from './pages/private/AddPost';
-import PostDetailsPage from './pages/PostDetailsPage';
+import PostDetailsPage from './pages/postDetailsPage/PostDetailsPage';
 import ResetPassword from './pages/ResetPassword';
 import MyPosts from './pages/private/myPosts/MyPosts'
 

@@ -1,0 +1,10 @@
+.submitComment[disabled]{
+    background-color: #EDEDED!important;
+    border:none;
+    color:black;
+    cursor:default;
+}
+
+.submitComment:hover{
+    text-decoration: none!important;
+}

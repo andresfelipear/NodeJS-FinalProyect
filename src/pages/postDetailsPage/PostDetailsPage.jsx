@@ -6,7 +6,8 @@ import {
     Notification,
 } from "react-bulma-components";
 import moment from 'moment'
-import { UserContext } from "../context/UserContext";
+import { UserContext } from "../../context/UserContext";
+import './PostDetailsPage.css'
 
 function PostDetailsPage() {
     //query string edit
@@ -182,7 +183,7 @@ function PostDetailsPage() {
                         <input type="hidden" name="postId" value={post._id} />
                         <input className="input is-small is-static" type="text" name="comment" value={comment} placeholder="Add a comment..." onChange={(e)=>setComment(e.target.value)} />
                         <button
-                            className="button is-ghost has-text-black has-text-weight-medium" 
+                            className="button is-ghost has-text-black has-text-weight-medium submitComment" 
                             type='submit'
                             disabled={disabled}
                         >Post
