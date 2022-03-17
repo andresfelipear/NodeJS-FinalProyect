@@ -8,6 +8,7 @@ import {
     Icon
 } from "react-bulma-components";
 import { UserContext } from "../context/UserContext"
+import Modal from "../components/notification/Modal";
 
 
 export default function SignUpPage() {
@@ -26,11 +27,25 @@ export default function SignUpPage() {
     const [disabled, setDisabled] = useState(true);
     const [icon, setIcon] = useState(iconTie);
     const [selectAvatar, setSelectAvatar] = useState("")
+    const [notiTitle, setNotiTitle] = useState("")
+    const [notiBody, setNotiBody] = useState("")
 
     const navigate = useNavigate()
     const location = useLocation()
 
     const [userContext, setUserContext] = useContext(UserContext)
+
+    const openModal = (title, message) => {
+        const modalContainer = document.getElementById("modal-container");
+        modalContainer.classList.add("is-active");
+        setNotiTitle(title);
+        setNotiBody(message);
+    }
+
+    const closeModal = () => {
+        const modalContainer = document.getElementById("modal-container");
+        modalContainer.classList.remove("is-active");
+    }
 
     const onChange = (event) => {
         if (event.target.name === "password") setPassword(event.target.value);
@@ -56,14 +71,13 @@ export default function SignUpPage() {
             })
             .then((data) => {
                 console.log(data);
-                setStatus("success");
                 setIsLoading(false);
                 setUserContext(prev => ({ ...prev, token: data.token }))
                 let from = location.state?.from?.pathname || '/'
                 navigate(from, { replace: true })
             })
             .catch((err) => {
-                setStatus("error");
+                openModal("Error Signing Up!", "Username and/or Email already exists")
                 setIsLoading(false);
             });
     };
@@ -71,7 +85,7 @@ export default function SignUpPage() {
     useEffect(() => {
         if (password && confirmPassword) {
             setDisabled(password !== confirmPassword)
-        }else{
+        } else {
             setDisabled(true)
         }
 
@@ -106,13 +120,6 @@ export default function SignUpPage() {
 
 
             <div className="widthForm has-background-light">
-                {status === "error" && (
-                    <Notification>
-                        <Heading>Error Signing Up!</Heading>
-                        Username and/or Email already exists
-                        <Button remove role="alertdialog" onClick={() => setStatus("")} />
-                    </Notification>
-                )}
                 <label className="label" htmlFor="username">Username</label>
                 <div className="field has-addons">
 
@@ -172,7 +179,7 @@ export default function SignUpPage() {
             </div>
 
 
-
+            <Modal notiTitle={notiTitle} notiBody={notiBody} handleClose={closeModal} />
         </main>
     )
 }
