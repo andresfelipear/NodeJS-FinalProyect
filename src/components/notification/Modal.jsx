@@ -4,7 +4,7 @@ import {
     Notification,
   } from "react-bulma-components";
 
-function Notification({notiTitle, notiBody, closeModal}) {
+function Modal({notiTitle, notiBody, handleClose}) {
   return (
     <div className="modal" id="modal-container">
         <div className="modal-background"></div>
@@ -15,9 +15,9 @@ function Notification({notiTitle, notiBody, closeModal}) {
             {notiBody}.
           </Notification>
         </div>
-        <button className="modal-close is-large" aria-label="close" onClick={closeModal}></button>
+        <button className="modal-close is-large" aria-label="close" onClick={handleClose}></button>
       </div>
   )
 }
 
-export default Notification
+export default Modal

@@ -1,10 +1,7 @@
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from "react";
-import {
-    Heading,
-    Notification,
-} from "react-bulma-components";
+import Modal from '../components/notification/Modal';
 
 function ForgotPassword() {
     const [username, setUsername] = useState("");
@@ -102,17 +99,7 @@ function ForgotPassword() {
                 {isLoading && <span>Loading...</span>}
             </div>
 
-            <div className="modal" id="modal-container">
-                <div className="modal-background"></div>
-                <div className="modal-content">
-
-                    <Notification p={5} m={6} color="warning">
-                        <Heading mb={2} >{notiTitle}</Heading>
-                        {notiBody}.
-                    </Notification>
-                </div>
-                <button className="modal-close is-large" aria-label="close" onClick={closeModal}></button>
-            </div>
+            <Modal notiTitle={notiTitle} notiBody={notiBody} handleClose={closeModal} />
         </main>
     )
 }

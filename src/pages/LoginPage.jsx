@@ -1,11 +1,8 @@
 import React from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useEffect, useState, useContext } from "react";
-import {
-  Heading,
-  Notification,
-} from "react-bulma-components";
 import { UserContext } from '../context/UserContext'
+import Modal from '../components/notification/Modal';
 
 function LoginPage() {
   const [username, setUsername] = useState("");
@@ -59,7 +56,7 @@ function LoginPage() {
       })
       .catch((err) => {
         setIsLoading(false);
-        openModal("Error Login", "Username or password that you entered is incorrect. Use a valid credential and try again.");
+        openModal("Error Login", "Username or password that you entered is incorrect. Use a valid credential and try again");
       });
   };
 
@@ -107,17 +104,7 @@ function LoginPage() {
         {isLoading && <span>Loading...</span>}
       </div>
 
-      <div className="modal" id="modal-container">
-        <div className="modal-background"></div>
-        <div className="modal-content">
-
-          <Notification p={5} m={6} color="warning">
-            <Heading mb={2} >{notiTitle}</Heading>
-            {notiBody}.
-          </Notification>
-        </div>
-        <button className="modal-close is-large" aria-label="close" onClick={closeModal}></button>
-      </div>
+      <Modal notiTitle={notiTitle} notiBody={notiBody} handleClose={closeModal} />
     </main>
   )
 }
