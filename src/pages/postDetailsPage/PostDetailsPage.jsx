@@ -181,7 +181,7 @@ function PostDetailsPage() {
                     )}
                     <form className='is-flex is-align-items-center panel-heading py-1 px-5' onSubmit={addComment}>
                         <input type="hidden" name="postId" value={post._id} />
-                        <input className="input is-small is-static" type="text" name="comment" value={comment} placeholder="Add a comment..." onChange={(e)=>setComment(e.target.value)} />
+                        <input className="input is-small is-size-6 is-static is-italic" type="text" name="comment" value={comment} placeholder="Add a comment..." onChange={(e)=>setComment(e.target.value)} />
                         <button
                             className="button is-ghost has-text-black has-text-weight-medium submitComment" 
                             type='submit'

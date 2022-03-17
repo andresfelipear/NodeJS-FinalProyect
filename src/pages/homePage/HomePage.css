@@ -39,3 +39,19 @@
     color:#0095f6!important; 
   }
 
+  .submitComment2{
+    color:#0095f6!important;
+  }
+
+  .submitComment2[disabled]{
+    background-color: white!important;
+    border:none;
+    color:#0095f6!important;
+    cursor:default;
+    opacity:1;
+    font-weight: 100;
+}
+
+.submitComment2:hover{
+    text-decoration: none!important;
+}

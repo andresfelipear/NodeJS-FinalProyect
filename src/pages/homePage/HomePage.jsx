@@ -17,6 +17,8 @@ function HomePage() {
   const { fetchData, setFetchData } = useState(true)
   const [userContext, setUserContext] = useContext(UserContext);
   const [loading, setLoading] = useState(false)
+  const [disabled, setDisabled] = useState(true)
+  const [comment, setComment] = useState("")
 
   // const [comment, setComment] = useContext("")
 
@@ -46,6 +48,14 @@ function HomePage() {
       fetchPosts();
     }
   }, [posts.length, fetchPosts]);
+
+  useEffect(() => {
+    if (comment) {
+        setDisabled(false)
+    }else{
+        setDisabled(true)
+    }
+}, [comment])
 
   const submitLike = (event) => {
     const postId = event.target.postId.value;
@@ -197,10 +207,10 @@ function HomePage() {
                       </>)}
                   </footer>
                   <footer className="card-footer">
-                    <form className='is-flex card-footer-item py-1 px-2' onSubmit={addComment}>
+                    <form className='is-flex card-footer-item py-1 pr-2 pl-5' onSubmit={addComment}>
                       <input type="hidden" name="postId" value={post._id} />
-                      <input className="input is-small is-static" type="text" name="comment" placeholder="Add a comment..." />
-                      <button className="button is-ghost color-secondary" type='submit'>Post</button>
+                      <input className="input is-small is-size-6 is-static is-italic" type="text" name="comment" value={comment} onChange={(e)=>{setComment(e.target.value)}} placeholder="Add a comment..." />
+                      <button className="button is-ghost submitComment2" type='submit' disabled={disabled}>Post</button>
                     </form>
 
                   </footer>
