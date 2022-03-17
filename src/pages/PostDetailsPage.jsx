@@ -5,6 +5,7 @@ import {
     Heading,
     Notification,
   } from "react-bulma-components";
+  import moment from 'moment'
 
 function PostDetailsPage() {
     //query string edit
@@ -17,7 +18,6 @@ function PostDetailsPage() {
     const [comments, setComments] = useState([])
     const [error, setError] = useState("")
     const [autofocus, setAutofocus] = useState(queryAutofocus ? queryAutofocus : false)
-    const [otherComments, setOtherComments] = useState([])
     const [isLoading, setIsLoading] = useState(false);
 
     const fetchPost = useCallback(() => {
@@ -105,11 +105,7 @@ function PostDetailsPage() {
                         </p>
                     </div>
                     <em>
-                        {/* {new Intl.DateTimeFormat('en-GB', {
-                            year: 'numeric', month: 'long', day: '2-digit',
-                            hour: 'numeric', minute: 'numeric', hour12: true
-                        }).format(post.date)} */}
-                        {post.date}
+                        {moment(post.date).format("MMMM Do YYYY, h:mm:ss a")}
                     </em>
                 </div>
                 <div className="card-image px-5">
@@ -123,8 +119,6 @@ function PostDetailsPage() {
 
                     </div>
                 </div>
-                {/* {autofocus ? (<div className="panel" tabIndex="0" autoFocus />) : (<div className="panel" tabIndex="0" />)} */}
-
                 <div className="panel" tabIndex="0" ref={(element) => { if (autofocus) element?.focus?.() }}>
                     <p className="panel-heading">
                         Comments
@@ -141,11 +135,7 @@ function PostDetailsPage() {
                                     {comment.comment}
                                 </div>
                                 <div className="subtitle is-6">
-                                    {/* {new Intl.DateTimeFormat('en-GB', {
-                                        year: 'numeric', month: 'long',
-                                        day: '2-digit', hour: 'numeric', minute: 'numeric', hour12: true
-                                    }).format(comment.date)} */}
-                                    {comment.date}
+                                {moment(comment.date).format("MMMM Do YYYY, h:mm:ss a")}
                                 </div>
                             </div>
 
