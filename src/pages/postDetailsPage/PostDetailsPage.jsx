@@ -85,7 +85,7 @@ function PostDetailsPage() {
     }, [comments]);
 
     useEffect(() => {
-        if (comment) {
+        if (comment && userContext.details) {
             setDisabled(false)
         }else{
             setDisabled(true)

@@ -9,18 +9,42 @@ import {
 import { Link } from 'react-router-dom'
 
 import "./HomePage.css"
+import Modal from '../../components/notification/Modal';
 
 function HomePage() {
 
-  const [error, setError] = useState("");
   const [posts, setPosts] = useState([])
   const { fetchData, setFetchData } = useState(true)
   const [userContext, setUserContext] = useContext(UserContext);
   const [loading, setLoading] = useState(false)
-  const [disabled, setDisabled] = useState(true)
-  const [comment, setComment] = useState("")
+  const [notiTitle, setNotiTitle] = useState("")
+  const [notiBody, setNotiBody] = useState("")
 
-  // const [comment, setComment] = useContext("")
+  const enableButton = (event)=>{
+    const button = event.nativeEvent.path[1][2];
+    const comm = event.target.value;
+    if(comm !=="" && userContext.details){
+    button.disabled = false;
+    }else{
+      button.disabled = true;
+    }
+  }
+  const noUser = () => {
+    if (!userContext.details) {
+      openModal("No Authenticated User", "Error you should be logged for comment a post")
+    }
+  }
+  const openModal = (title, message) => {
+    const modalContainer = document.getElementById("modal-container");
+    modalContainer.classList.add("is-active");
+    setNotiTitle(title);
+    setNotiBody(message);
+  }
+
+  const closeModal = () => {
+    const modalContainer = document.getElementById("modal-container");
+    modalContainer.classList.remove("is-active");
+  }
 
   const fetchPosts = useCallback(() => {
     setLoading(true);
@@ -37,7 +61,7 @@ function HomePage() {
         setFetchData(false);
       }
       else {
-        setError("Error fetching data")
+        openModal("Error Post", "Error fetching data")
       }
       setLoading(false);
     }).catch(err => { setLoading(false) });
@@ -48,14 +72,6 @@ function HomePage() {
       fetchPosts();
     }
   }, [posts.length, fetchPosts]);
-
-  useEffect(() => {
-    if (comment) {
-        setDisabled(false)
-    }else{
-        setDisabled(true)
-    }
-}, [comment])
 
   const submitLike = (event) => {
     const postId = event.target.postId.value;
@@ -74,7 +90,7 @@ function HomePage() {
         setFetchData(true);
       }
       else {
-        setError("Error liking a post")
+        openModal("Error Like Post", "Error Liking a Post")
       }
     })
 
@@ -97,7 +113,7 @@ function HomePage() {
         setFetchData(true);
       }
       else {
-        setError("Error deleting post")
+        openModal("Delete Error", "Error deleting post")
       }
     })
 
@@ -121,7 +137,7 @@ function HomePage() {
         await response.json;
       }
       else {
-        setError("Error you should be logged for comment a post")
+        openModal("No Authenticated User", "Error you should be logged for comment a post")
       }
     })
 
@@ -135,12 +151,9 @@ function HomePage() {
   }
   return (
     <main>
-      {error && <div className="notification is-warning is-light p-2">
-        {error}
-      </div>}
       {posts.length > 0 ? (
         <div className="columns is-multiline is-4 m-4">
-          
+
           {posts && posts.map((post) => {
             return (
               <div className="column is-one-quarter" key={post.id}>
@@ -191,10 +204,10 @@ function HomePage() {
                   </div>
                   <footer className="card-footer">
                     <a className="card-footer-item color-secondary" href={`/postDetails/${post._id}`}>
-                    <button className='button is-ghost decNone'>Details</button>
-                      </a>
+                      <button className='button is-ghost decNone'>Details</button>
+                    </a>
 
-                    {(userContext.details && ((userContext.details.username ===post.username)|| (userContext.details.username === "admin"))) && (
+                    {(userContext.details && ((userContext.details.username === post.username) || (userContext.details.username === "admin"))) && (
                       <>
                         <Link className='card-footer-item color-secondary' to={`/admin/add-post/${post._id}?edit=true`}>Edit</Link>
                         <form className='formDeletePost' onSubmit={deletePost}>
@@ -209,8 +222,10 @@ function HomePage() {
                   <footer className="card-footer">
                     <form className='is-flex card-footer-item py-1 pr-2 pl-5' onSubmit={addComment}>
                       <input type="hidden" name="postId" value={post._id} />
-                      <input className="input is-small is-size-6 is-static is-italic" type="text" name="comment" value={comment} onChange={(e)=>{setComment(e.target.value)}} placeholder="Add a comment..." />
-                      <button className="button is-ghost submitComment2" type='submit' disabled={disabled}>Post</button>
+                      <input className="input is-small is-size-6 is-static is-italic" type="text" name="comment" onChange={(e) => {enableButton(e)}} placeholder="Add a comment..." />
+                      <button className="button is-ghost submitComment2" type='submit' disabled>
+                        <span onClick={noUser}>Post</span>
+                      </button>
                     </form>
 
                   </footer>
@@ -235,7 +250,7 @@ function HomePage() {
       )
       }
 
-
+      <Modal notiTitle={notiTitle} notiBody={notiBody} handleClose={closeModal} />
     </main >
   )
 }
