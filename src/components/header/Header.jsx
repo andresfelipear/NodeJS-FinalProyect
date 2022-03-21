@@ -1,11 +1,14 @@
 
 import "./Header.css"
-import React, { useCallback, useContext, useEffect } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 
 
 function Header() {
     const [userContext, setUserContext] = useContext(UserContext);
+    const mediaDesktop = '(min-width:1024px )';
+
+    const [isDesktop, setIsDesktop] = useState(false)
 
     const fetchUserDetails = useCallback(() => {
         fetch("http://localhost:8000/api/user/me", {
@@ -34,6 +37,17 @@ function Header() {
             fetchUserDetails();
         }
     }, [fetchUserDetails, userContext.details]);
+
+    useEffect(() => {
+        const media = window.matchMedia(mediaDesktop)
+        if (media.matches !== isDesktop) {
+            setIsDesktop(media.matches)
+        }
+        const listener = () => setIsDesktop(media.matches);
+        window.addEventListener("resize", listener);
+        return () => window.removeEventListener("resize", listener);
+
+    }, [isDesktop])
 
     const logoutHandler = () => {
         fetch("http://localhost:8000/api/user/logout", {
@@ -64,52 +78,66 @@ function Header() {
                         <span className='spanIcon'>
                             <i className="fas fa-blog"></i>
                         </span>
-
                     </a>
-                    <div className="navbar-burger" data-target="navbarExampleTransparentExample">
-                    </div>
+                    <a className="navbar-item" href="/"> Posts </a>
+
                 </div>
 
-                <div id="navbarExampleTransparentExample" className="navbar-menu">
+                <div className="navbar-menu is-active has-text-centered">
+                    {isDesktop ? (
+                        <>
+                            <div className="navbar-start">
+                                {userContext.details && (
+                                    <>
+                                        <a className="navbar-item" href="/admin/myPosts"> MyPosts </a>
+                                        <a className="navbar-item" href="/admin/add-post"> Add Post </a>
+                                    </>
 
-                    <div className="navbar-start">
-                        <a className="navbar-item" href="/"> Posts </a>
-                        {userContext.details && (
-                            <>
-                            <a className="navbar-item" href="/admin/myPosts"> MyPosts </a>
-                            <a className="navbar-item" href="/admin/add-post"> Add Post </a> 
-                            </>
-                        
+                                )}
+                            </div>
+
+                            <div className="navbar-end">
+
+                                {userContext.details ? (
+                                    <>
+                                        <div className="navbar-item">
+                                            <div className="icon-text">
+                                                <span className="icon has-text-warning">
+                                                    <i className={`fas ${userContext.details.icon}`}></i>
+                                                </span>
+                                                <span>{userContext.details.username}</span>
+                                            </div>
+                                        </div>
+                                        <div className="navbar-item">
+                                            <button className="button is-light" type="submit" onClick={logoutHandler}> Log Out </button>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <a className="navbar-item" href="/login"> Login </a>
+                                        <a className="navbar-item" href="/signup">Sign Up</a>
+                                    </>
+
+                                )}
+
+
+
+                            </div>
+                        </>
+                    ) :
+                        (
+                            <div className="navbar-start">
+                                {userContext.details && (
+                                    <>
+                                        <a className="navbar-item" href="/admin/myPosts"> MyPosts </a>
+                                        <a className="navbar-item" href="/admin/add-post"> Add Post </a>
+                                    </>
+
+                                )}
+                            </div>
+
                         )}
-                    </div>
 
-                    <div className="navbar-end">
-
-                        {userContext.details ? (
-                            <>
-                                <div className="navbar-item">
-                                    <div className="icon-text">
-                                        <span className="icon has-text-warning">
-                                            <i className={`fas ${userContext.details.icon}`}></i>
-                                        </span>
-                                        <span>{userContext.details.username}</span>
-                                    </div>
-                                </div>
-                                <div className="navbar-item">
-                                    <button className="button is-light" type="submit" onClick={logoutHandler}> Log Out </button>
-                                </div>
-                            </>
-                        ) : (
-                            <>
-                                <a className="navbar-item" href="/login"> Login </a>
-                                <a className="navbar-item" href="/signup">Sign Up</a>
-                            </>
-
-                        )}
-
-
-
-                    </div>
                 </div>
             </nav>
         </div>
