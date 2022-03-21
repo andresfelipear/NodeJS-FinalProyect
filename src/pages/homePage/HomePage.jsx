@@ -109,7 +109,7 @@ function HomePage() {
         setFetchData(true);
       }
       else {
-        openModal("Error Like Post", "Error Liking a Post")
+        openModal("Unauthenticated User", "You should be authenticated for like a Post")
       }
     })
 
@@ -132,7 +132,7 @@ function HomePage() {
         "Content-Type": "application/json",
         Authorization: `Bearer ${userContext.token}`,
       },
-      body: JSON.stringify({ postId:postIdDelete }),
+      body: JSON.stringify({ postId: postIdDelete }),
       credentials: "include",
 
     }).then(async (response) => {
@@ -140,7 +140,7 @@ function HomePage() {
         await response.json;
         setPosts([])
         setFetchData(true);
-        
+
 
       }
       else {
@@ -192,20 +192,30 @@ function HomePage() {
                   <div className="card-image">
                     <figure className="image is-4by3">
                       <img src={`/images/${post.imageUrl}.${process.env.REACT_APP_API_FORMAT_IMAGES}`}
-                        alt={post.title}/>
+                        alt={post.title} />
                     </figure>
                   </div>
                   <div className="card-content">
                     <div className="is-flex mb-1">
                       <div className="pr-2">
-                        <form onSubmit={submitLike}>
-                          <input type="hidden" name="postId" value={post._id} />
-                          <button type="submit"
+                        {userContext.details ? (
+                          <form onSubmit={submitLike}>
+                            <input type="hidden" name="postId" value={post._id} />
+                            <button type="submit"
+                              className="buttons-like-commit button is-ghost p-0 decNone "
+                            >
+                              <i className="far fa-thumbs-up p-8"></i>
+                            </button>
+                          </form>
+                        ) : (
+                          <button onClick={()=>{openModal("No Authenticated User", "Error you should be logged for comment a post")}}
                             className="buttons-like-commit button is-ghost p-0 decNone "
                           >
                             <i className="far fa-thumbs-up p-8"></i>
                           </button>
-                        </form>
+
+                        )}
+
 
                       </div>
                       <div className="pl-2" >
