@@ -1,3 +1,5 @@
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css";
+
 .buttons-like-commit{
     font-size: 24px;
     height: 40px;
@@ -54,4 +56,18 @@
 
 .submitComment2:hover{
     text-decoration: none!important;
+}
+
+@media screen and (min-width:1025px) and (max-width:1215px) {
+  .column{
+    width: 33.3333%!important;
+  }
+
+}
+
+@media screen and (min-width:769px) and (max-width:1024px) {
+  .column{
+    width: 50%!important;
+  }
+
 }

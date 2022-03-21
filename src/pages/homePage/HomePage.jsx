@@ -183,7 +183,7 @@ function HomePage() {
   return (
     <main>
       {posts.length > 0 ? (
-        <div className="columns is-multiline is-4 m-4">
+        <div className="columns is-multiline m-4">
 
           {posts && posts.map((post) => {
             return (
@@ -192,7 +192,7 @@ function HomePage() {
                   <div className="card-image">
                     <figure className="image is-4by3">
                       <img src={`/images/${post.imageUrl}.${process.env.REACT_APP_API_FORMAT_IMAGES}`}
-                        alt={post.title} width="100px" />
+                        alt={post.title}/>
                     </figure>
                   </div>
                   <div className="card-content">
