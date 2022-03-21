@@ -129,7 +129,7 @@ function AddPost() {
 
                     <div className="control has-icons-left">
                         <div className="select">
-                            <select defaultValue="img1" onChange={(e) => setImageUrl(e.target.value)}>
+                            <select defaultValue="img1" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)}>
                                 <option value="img1">Image 1</option>
                                 <option value="img2">Image 2</option>
                                 <option value="img3">Image 3</option>

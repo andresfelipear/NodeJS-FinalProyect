@@ -73,13 +73,47 @@ function Header() {
     return (
         <div>
             <nav className="navbar is-info">
-                <div className="navbar-brand">
-                    <a className="navbar-item" href="/">
-                        <span className='spanIcon'>
-                            <i className="fas fa-blog"></i>
-                        </span>
-                    </a>
-                    <a className="navbar-item" href="/"> Posts </a>
+                <div className="navbar-brand is-flex is-justify-content-space-between">
+                    <div className="is-flex">
+                        <a className="navbar-item" href="/">
+                            <span className='spanIcon'>
+                                <i className="fas fa-blog"></i>
+                            </span>
+                        </a>
+                        <a className="navbar-item has-text-white" href="/"> Posts </a>
+                    </div>
+
+                    {!isDesktop ? (
+                        <div className="is-flex pr-4">
+
+                            {userContext.details ? (
+                                <>
+                                    <div className="navbar-item">
+                                        <div className="icon-text">
+                                            <span className="icon has-text-warning">
+                                                <i className={`fas ${userContext.details.icon}`}></i>
+                                            </span>
+                                            <span className="has-text-white">{userContext.details.username}</span>
+                                        </div>
+                                    </div>
+                                    <div className="navbar-item">
+                                        <button className="button is-light px-2" type="submit" onClick={logoutHandler}> Log Out </button>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <a className="navbar-item has-text-white" href="/login"> Login </a>
+                                    <a className="navbar-item has-text-white" href="/signup">Sign Up</a>
+                                </>
+
+                            )}
+
+
+
+                        </div>
+                    ) : (
+                        <></>
+                    )}
 
                 </div>
 
@@ -90,6 +124,7 @@ function Header() {
                                 {userContext.details && (
                                     <>
                                         <a className="navbar-item" href="/admin/myPosts"> MyPosts </a>
+                                        <hr className="navbar-divider"/>
                                         <a className="navbar-item" href="/admin/add-post"> Add Post </a>
                                     </>
 
@@ -114,8 +149,8 @@ function Header() {
                                     </>
                                 ) : (
                                     <>
-                                        <a className="navbar-item" href="/login"> Login </a>
-                                        <a className="navbar-item" href="/signup">Sign Up</a>
+                                        <a className="navbar-item has-text-white" href="/login"> Login </a>
+                                        <a className="navbar-item has-text-white" href="/signup">Sign Up</a>
                                     </>
 
                                 )}
@@ -130,6 +165,7 @@ function Header() {
                                 {userContext.details && (
                                     <>
                                         <a className="navbar-item" href="/admin/myPosts"> MyPosts </a>
+                                        <hr className="navbar-divider"/>
                                         <a className="navbar-item" href="/admin/add-post"> Add Post </a>
                                     </>
 
