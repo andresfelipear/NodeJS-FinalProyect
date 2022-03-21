@@ -7,8 +7,10 @@ import {
 } from "react-bulma-components";
 
 import { Link } from 'react-router-dom'
+import ModalDelete from '../../../components/ModalDelete/ModalDelete';
 
 import "./MyPosts.css"
+import Modal from '../../../components/notification/Modal';
 
 function MyPosts() {
 
@@ -16,8 +18,46 @@ function MyPosts() {
   const [posts, setPosts] = useState([])
   const [userContext, setUserContext] = useContext(UserContext);
   const [loading, setLoading] = useState(false)
+  const [notiTitle, setNotiTitle] = useState("")
+  const [notiBody, setNotiBody] = useState("")
+  const [notiDeleteTitle, setNotiDeleteTitle] = useState("")
+  const [notiDeleteBody, setNotiDeleteBody] = useState("")
+  const [postIdDelete, setPostIdDelete] = useState("")
 
-  // const [comment, setComment] = useContext("")
+
+  const openModal = (title, message) => {
+    const modalContainer = document.getElementById("modal-container");
+    modalContainer.classList.add("is-active");
+    setNotiTitle(title);
+    setNotiBody(message);
+  }
+  //modal confirmation delete post
+  const openModal2 = (postId) => {
+    setPostIdDelete(postId)
+    const modalContainer = document.getElementById("modal-container2");
+    modalContainer.classList.add("is-active");
+    setNotiDeleteTitle("Remove Post");
+    setNotiDeleteBody("Are you sure you want to delete this post?");
+  }
+
+  const closeModal = () => {
+    const modalContainer = document.getElementById("modal-container");
+    modalContainer.classList.remove("is-active");
+  }
+
+  const closeModal2 = () => {
+    const modalContainer = document.getElementById("modal-container2");
+    modalContainer.classList.remove("is-active");
+    setPostIdDelete("")
+  }
+
+  const processDelete = (e) => {
+    const confirmation = e.target.value
+    if (confirmation === "Yes") {
+      deletePost()
+    }
+    closeModal2()
+  }
 
   const fetchPosts = useCallback(() => {
     setLoading(true);
@@ -30,7 +70,7 @@ function MyPosts() {
     }).then(async (response) => {
       if (response.ok) {
         const data = await response.json();
-        if(userContext.details){
+        if (userContext.details) {
           setPosts(data.posts.filter(post => post.username === userContext.details.username))
         }
       }
@@ -41,11 +81,12 @@ function MyPosts() {
     }).catch(err => { console.log(err); setLoading(false) });
   }, [userContext.details])
 
+
   useEffect(() => {
-    if (userContext.details) {
+    if (posts.length === 0) {
       fetchPosts();
     }
-  }, [fetchPosts, userContext.details]);
+  }, [posts, fetchPosts]);
 
   const submitLike = (event) => {
     const postId = event.target.postId.value;
@@ -69,23 +110,23 @@ function MyPosts() {
 
   }
 
-  const deletePost = (event) => {
-    const postId = event.target.postId.value;
+  const deletePost = () => {
     fetch(process.env.REACT_APP_API_ENDPOINT + "api/admin/deletePost", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${userContext.token}`,
       },
-      body: JSON.stringify({ postId }),
+      body: JSON.stringify({ postId: postIdDelete }),
       credentials: "include",
 
     }).then(async (response) => {
       if (response.ok) {
         await response.json;
+        setPosts([])
       }
       else {
-        setError("Error deleting post")
+        openModal("Delete Error", "Error deleting post")
       }
     })
 
@@ -183,13 +224,9 @@ function MyPosts() {
                           <a className="card-footer-item color-secondary" href={`/postDetails/${post._id}`}>Details</a>
                           <>
                             <Link className='card-footer-item color-secondary' to={`/admin/add-post/${post._id}?edit=true`}>Edit</Link>
-                            <form className='formDeletePost' onSubmit={deletePost}>
-                              <input type="hidden" name="postId" value={post._id} />
-                              <a className="card-footer-item color-secondary" href=''>
-                                <button className='button is-ghost has-text-info decNone' type="submit">Delete</button>
-                              </a>
-                            </form>
-
+                            <a className="card-footer-item color-secondary">
+                              <button className='button is-ghost decNone' onClick={() => { openModal2(post._id) }}>Delete</button>
+                            </a>
                           </>
                         </footer>
                         <footer className="card-footer">
@@ -225,6 +262,8 @@ function MyPosts() {
         )
       }
 
+      <Modal notiTitle={notiTitle} notiBody={notiBody} handleClose={closeModal} />
+      <ModalDelete notiTitle={notiDeleteTitle} notiBody={notiDeleteBody} handleClose={closeModal2} processDelete={processDelete} />
 
 
 
