@@ -133,7 +133,7 @@ function MyPosts() {
               <div className="columns is-multiline is-4 m-4">
                 {posts && posts.map((post) => {
                   return (
-                    <div className="column is-one-quarter" key={post.id}>
+                    <div className="column is-one-quarter" key={post._id}>
                       <div className="card">
                         <div className="card-image">
                           <figure className="image is-4by3">

@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom'
 
 import "./HomePage.css"
 import Modal from '../../components/notification/Modal';
+import ModalDelete from '../../components/ModalDelete/ModalDelete';
 
 function HomePage() {
 
@@ -19,13 +20,16 @@ function HomePage() {
   const [loading, setLoading] = useState(false)
   const [notiTitle, setNotiTitle] = useState("")
   const [notiBody, setNotiBody] = useState("")
+  const [notiDeleteTitle, setNotiDeleteTitle] = useState("")
+  const [notiDeleteBody, setNotiDeleteBody] = useState("")
+  const [postIdDelete, setPostIdDelete] = useState("")
 
-  const enableButton = (event)=>{
+  const enableButton = (event) => {
     const button = event.nativeEvent.path[1][2];
     const comm = event.target.value;
-    if(comm !=="" && userContext.details){
-    button.disabled = false;
-    }else{
+    if (comm !== "" && userContext.details) {
+      button.disabled = false;
+    } else {
       button.disabled = true;
     }
   }
@@ -41,9 +45,24 @@ function HomePage() {
     setNotiBody(message);
   }
 
+  //modal confirmation delete post
+  const openModal2 = (postId) => {
+    setPostIdDelete(postId)
+    const modalContainer = document.getElementById("modal-container2");
+    modalContainer.classList.add("is-active");
+    setNotiDeleteTitle("Remove Post");
+    setNotiDeleteBody("Are you sure you want to delete this post?");
+  }
+
   const closeModal = () => {
     const modalContainer = document.getElementById("modal-container");
     modalContainer.classList.remove("is-active");
+  }
+
+  const closeModal2 = () => {
+    const modalContainer = document.getElementById("modal-container2");
+    modalContainer.classList.remove("is-active");
+    setPostIdDelete("")
   }
 
   const fetchPosts = useCallback(() => {
@@ -65,13 +84,13 @@ function HomePage() {
       }
       setLoading(false);
     }).catch(err => { setLoading(false) });
-  }, [setFetchData])
+  }, [fetchData])
 
   useEffect(() => {
     if (posts.length === 0) {
       fetchPosts();
     }
-  }, [posts.length, fetchPosts]);
+  }, [posts, fetchPosts]);
 
   const submitLike = (event) => {
     const postId = event.target.postId.value;
@@ -96,21 +115,33 @@ function HomePage() {
 
   }
 
-  const deletePost = (event) => {
-    const postId = event.target.postId.value;
+  const processDelete = (e) => {
+    const confirmation = e.target.value
+    if (confirmation === "Yes") {
+      deletePost()
+    }
+    closeModal2()
+  }
+
+
+
+  const deletePost = () => {
     fetch(process.env.REACT_APP_API_ENDPOINT + "api/admin/deletePost", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${userContext.token}`,
       },
-      body: JSON.stringify({ postId }),
+      body: JSON.stringify({ postId:postIdDelete }),
       credentials: "include",
 
     }).then(async (response) => {
       if (response.ok) {
         await response.json;
+        setPosts([])
         setFetchData(true);
+        
+
       }
       else {
         openModal("Delete Error", "Error deleting post")
@@ -210,19 +241,15 @@ function HomePage() {
                     {(userContext.details && ((userContext.details.username === post.username) || (userContext.details.username === "admin"))) && (
                       <>
                         <Link className='card-footer-item color-secondary' to={`/admin/add-post/${post._id}?edit=true`}>Edit</Link>
-                        <form className='formDeletePost' onSubmit={deletePost}>
-                          <input type="hidden" name="postId" value={post._id} />
-                          <a className="card-footer-item color-secondary" href="">
-                            <button className='button is-ghost decNone' type="submit">Delete</button>
-                          </a>
-                        </form>
-
+                        <a className="card-footer-item color-secondary">
+                          <button className='button is-ghost decNone' onClick={() => { openModal2(post._id) }}>Delete</button>
+                        </a>
                       </>)}
                   </footer>
                   <footer className="card-footer">
                     <form className='is-flex card-footer-item py-1 pr-2 pl-5' onSubmit={addComment}>
                       <input type="hidden" name="postId" value={post._id} />
-                      <input className="input is-small is-size-6 is-static is-italic" type="text" name="comment" onChange={(e) => {enableButton(e)}} placeholder="Add a comment..." />
+                      <input className="input is-small is-size-6 is-static is-italic" type="text" name="comment" onChange={(e) => { enableButton(e) }} placeholder="Add a comment..." />
                       <button className="button is-ghost submitComment2" type='submit' disabled>
                         <span onClick={noUser}>Post</span>
                       </button>
@@ -251,6 +278,7 @@ function HomePage() {
       }
 
       <Modal notiTitle={notiTitle} notiBody={notiBody} handleClose={closeModal} />
+      <ModalDelete notiTitle={notiDeleteTitle} notiBody={notiDeleteBody} handleClose={closeModal2} processDelete={processDelete} />
     </main >
   )
 }
