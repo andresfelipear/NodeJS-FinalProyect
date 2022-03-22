@@ -29,6 +29,8 @@ export default function SignUpPage() {
     const [selectAvatar, setSelectAvatar] = useState("")
     const [notiTitle, setNotiTitle] = useState("")
     const [notiBody, setNotiBody] = useState("")
+    const [passwordHelper, setPasswordHelper] = useState("")
+    const [confirmPasswordHelper, setConfirmPasswordHelper] = useState("")
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -83,8 +85,31 @@ export default function SignUpPage() {
     };
 
     useEffect(() => {
+        if(password){
+            if(password.length <=3){
+                setPasswordHelper('Password must have more than 3 characters')
+            }
+            else{
+                setPasswordHelper("")
+            }
+        }
+        if(confirmPassword){
+            if(confirmPassword.length <=3){
+                setConfirmPasswordHelper('Confirm Password must have more than 3 characters')
+            }else{
+                setConfirmPasswordHelper("")
+            }
+        }
         if (password && confirmPassword) {
-            setDisabled(password !== confirmPassword)
+            if((password.length>3) && (confirmPassword.length>3)){
+                if(password === confirmPassword){
+                    setDisabled(false)
+                }else{
+                    setDisabled(true)
+                    openModal("Incorrect Credentials", "Password and confirm password do not match")
+                }
+                
+            }
         } else {
             setDisabled(true)
         }
@@ -155,12 +180,14 @@ export default function SignUpPage() {
                     <div className="control">
                         <input className="input" type="password" name="password" onChange={onChange} />
                     </div>
+                    <p class="help is-danger">{passwordHelper}</p>
                 </div>
                 <div className="field">
                     <label className="label" htmlFor="confirmPassword">Confirm Password</label>
                     <div className="control">
                         <input className="input" type="password" name="confirmPassword" onChange={onChange} />
                     </div>
+                    <p class="help is-danger">{confirmPasswordHelper}</p>
                 </div>
 
                 <div className="is-flex is-justify-content-center mt-4">
