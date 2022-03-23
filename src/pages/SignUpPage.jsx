@@ -144,7 +144,7 @@ export default function SignUpPage() {
         <main className="section mt-6 ">
 
 
-            <div className="widthForm has-background-light">
+            <div className="widthForm has-background-light borderRadius">
                 <label className="label" htmlFor="username">Username</label>
                 <div className="field has-addons">
 
