@@ -208,7 +208,7 @@ function HomePage() {
                             </button>
                           </form>
                         ) : (
-                          <button onClick={()=>{openModal("No Authenticated User", "Error you should be logged for comment a post")}}
+                          <button onClick={()=>{openModal("No Authenticated User ", "Error you should be logged for like a post")}}
                             className="buttons-like-commit button is-ghost p-0 decNone "
                           >
                             <i className="far fa-thumbs-up p-8"></i>
