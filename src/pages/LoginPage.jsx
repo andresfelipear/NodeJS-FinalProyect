@@ -35,7 +35,7 @@ function LoginPage() {
   const submit = () => {
     const body = { username, password };
     setIsLoading(true);
-    fetch("http://localhost:8000/api/user/login", {
+    fetch(process.env.REACT_APP_API_ENDPOINT+"/api/user/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),

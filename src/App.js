@@ -19,7 +19,7 @@ function App() {
   const [userContext, setUserContext] = useContext(UserContext)
 
   const verifyUser = useCallback(() => {
-    fetch("http://localhost:8000/api/user/refreshToken", {
+    fetch(process.env.REACT_APP_API_ENDPOINT+"/api/user/refreshToken", {
       method: 'POST',
       credentials: "include",
       header: { "Content-Type": "application/json" }

@@ -58,7 +58,7 @@ export default function SignUpPage() {
     const submit = () => {
         const body = { username, email, password, icon };
         setIsLoading(true);
-        fetch("http://localhost:8000/api/user/signup", {
+        fetch(process.env.REACT_APP_API_ENDPOINT+"/api/user/signup", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body),

@@ -11,7 +11,7 @@ function Header() {
     const [isDesktop, setIsDesktop] = useState(false)
 
     const fetchUserDetails = useCallback(() => {
-        fetch("http://localhost:8000/api/user/me", {
+        fetch(process.env.REACT_APP_API_ENDPOINT+"/api/user/me", {
             method: "GET",
             credentials: "include",
             headers: {
@@ -50,7 +50,7 @@ function Header() {
     }, [isDesktop])
 
     const logoutHandler = () => {
-        fetch("http://localhost:8000/api/user/logout", {
+        fetch(process.env.REACT_APP_API_ENDPOINT+"/api/user/logout", {
             method: "GET",
             credentials: "include",
             headers: {
