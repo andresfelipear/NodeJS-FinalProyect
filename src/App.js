@@ -19,7 +19,7 @@ function App() {
   const [userContext, setUserContext] = useContext(UserContext)
 
   const verifyUser = useCallback(() => {
-    fetch(process.env.REACT_APP_API_ENDPOINT+"/api/user/refreshToken", {
+    fetch(process.env.REACT_APP_API_ENDPOINT + "/api/user/refreshToken", {
       method: 'POST',
       credentials: "include",
       header: { "Content-Type": "application/json" }
@@ -54,17 +54,17 @@ function App() {
   return (
     <div className='App'>
       <Header />
-        <Routes>
-          <Route path='/' element={<HomePage />} />
-          <Route path='/signup' element={<SignUpPage />} />
-          <Route path='/login' element={<LoginPage />} />
-          <Route path='/forgotPassword' element={<ForgotPassword />} />
-          <Route path='/admin/add-post/:postId' element={<AddPost />} />
-          <Route path='/admin/add-post' element={<AddPost />} />
-          <Route path='/postDetails/:postId' element={<PostDetailsPage />} />
-          <Route path='/passwordReset' element={<ResetPassword />} />
-          <Route path='/admin/myPosts' element={<MyPosts />} />
-        </Routes>
+      <Routes>
+        <Route path='/' element={<HomePage />} />
+        <Route path='/signup' element={<SignUpPage />} />
+        <Route path='/login' element={<LoginPage />} />
+        <Route path='/forgotPassword' element={<ForgotPassword />} />
+        <Route path='/admin/add-post/:postId' element={<AddPost />} />
+        <Route path='/admin/add-post' element={<AddPost />} />
+        <Route path='/postDetails/:postId' element={<PostDetailsPage />} />
+        <Route path='/passwordReset' element={<ResetPassword />} />
+        <Route path='/admin/myPosts' element={<MyPosts />} />
+      </Routes>
 
       <Footer />
     </div>
