@@ -50,7 +50,7 @@ function PostDetailsPage() {
     //fetch comments for that post
     const fetchComments = useCallback(() => {
         setIsLoading(true)
-        fetch(process.env.REACT_APP_API_ENDPOINT + `api/user/getComments/${postId}`, {
+        fetch(process.env.REACT_APP_API_ENDPOINT + `/api/user/getComments/${postId}`, {
             method: "GET",
             credentials: "include",
             headers: {
@@ -99,7 +99,7 @@ function PostDetailsPage() {
     const addComment = (event) => {
         const comment = event.target.comment.value;
         const postId = event.target.postId.value;
-        fetch(process.env.REACT_APP_API_ENDPOINT + "api/admin/add-comment", {
+        fetch(process.env.REACT_APP_API_ENDPOINT + "/api/admin/add-comment", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
