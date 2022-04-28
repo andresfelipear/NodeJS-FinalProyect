@@ -67,7 +67,7 @@ function HomePage() {
 
   const fetchPosts = useCallback(() => {
     setLoading(true);
-    fetch(process.env.REACT_APP_API_ENDPOINT + "api/user/getPosts", {
+    fetch(process.env.REACT_APP_API_ENDPOINT + "/api/user/getPosts", {
       method: "GET",
       credentials: "include",
       headers: {
