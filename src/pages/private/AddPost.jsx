@@ -26,7 +26,7 @@ function AddPost() {
     const location = useLocation()
 
     const fetchPost = useCallback(() => {
-        fetch(process.env.REACT_APP_API_ENDPOINT + `api/admin/getPost/${postId}`, {
+        fetch(process.env.REACT_APP_API_ENDPOINT + `/api/admin/getPost/${postId}`, {
             method: "GET",
             credentials: "include",
             headers: {
@@ -62,7 +62,7 @@ function AddPost() {
     const submit = () => {
         const body = { title, description, imageUrl, postId };
         if (!editing) {
-            fetch(process.env.REACT_APP_API_ENDPOINT + "api/admin/add-post", {
+            fetch(process.env.REACT_APP_API_ENDPOINT + "/api/admin/add-post", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -86,7 +86,7 @@ function AddPost() {
                 });
         }
         else {
-            fetch(process.env.REACT_APP_API_ENDPOINT + "api/admin/edit-post", {
+            fetch(process.env.REACT_APP_API_ENDPOINT + "/api/admin/edit-post", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

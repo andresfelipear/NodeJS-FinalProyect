@@ -28,7 +28,7 @@ function PostDetailsPage() {
     const fetchPost = useCallback(() => {
         setIsLoading(true);
         //fetch post
-        fetch(process.env.REACT_APP_API_ENDPOINT + `api/user/getPost/${postId}`, {
+        fetch(process.env.REACT_APP_API_ENDPOINT + `/api/user/getPost/${postId}`, {
             method: "GET",
             credentials: "include",
             headers: {
