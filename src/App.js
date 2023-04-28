@@ -31,7 +31,7 @@ function App() {
         setUserContext(prev => ({ ...prev, token: null }))
       }
 
-      setTimeout(verifyUser, 5 * 30 * 1000) //call refreshtoken every 5 minutes to renew tokens
+      setTimeout(verifyUser, 5 * 30 * 1000) //call refreshtoken every 5 minutes to renew token
     })
   }, [setUserContext])
 
